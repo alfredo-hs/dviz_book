@@ -2,9 +2,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Data Visualization for Social Scientists",
+    "title": "Data and Visualization for Social Scientists",
     "section": "",
-    "text": "Welcome\nThis book offers a gentle introduction to data visualization using R and – occasionally – python. In this book you will learn how to make beautiful, informative, and reproducible visualizations with examples from different social sciences. It is inspired by a course on Data Visualization that I taught at the Barcelona Institute of International Studies. Thus, a special thanks goes out to the many graduate students whose efforts, questions, and feedback helped greatly improve the content of this book!",
+    "text": "Welcome\nAll tidy datasets are alike; each messy dataset set is messy in its own way. If you have worked with data in the wild you have surely experienced the frustration of having to spend more time data cleaning than data analyzing. The purpose of this book is to accompany you throughout this unfortunate yet inevitable process and offer some tricks and general guidelines that will make that journey less strenuous.\nBack in the dark ages, before large language models (LLMs) became part of our every day life, I taught a course on data visualization at the Barcelona Institute of International Studies. This book started as course notes with some code for students to tweak and adapt to their needs. Today, memorizing the syntax of R code is a far less marketable skill, and the fun part of data analysis and visualization is ever more accessible. However, the grunt work of data cleaning endures.\nA special thanks goes out to the many graduate students whose efforts, questions, and feedback served as inspiration for this book!",
     "crumbs": [
       "Welcome"
     ]
@@ -12,7 +12,7 @@
   {
     "objectID": "index.html#contact",
     "href": "index.html#contact",
-    "title": "Data Visualization for Social Scientists",
+    "title": "Data and Visualization for Social Scientists",
     "section": "Contact",
     "text": "Contact\nThis book is in open review. If you have any questions, comments or suggestions; please contact me by email or report an issue on GitHub.",
     "crumbs": [
@@ -22,9 +22,9 @@
   {
     "objectID": "index.html#build-information",
     "href": "index.html#build-information",
-    "title": "Data Visualization for Social Scientists",
+    "title": "Data and Visualization for Social Scientists",
     "section": "Build Information",
-    "text": "Build Information\nThis book was built using R version 4.4.0 (2024-04-24). For specific package versions please see the session information below:\n\n\nR version 4.4.0 (2024-04-24)\nPlatform: aarch64-apple-darwin20\nRunning under: macOS Sonoma 14.2.1\n\nMatrix products: default\nBLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib \nLAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0\n\nlocale:\n[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8\n\ntime zone: Europe/Vilnius\ntzcode source: internal\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods   base     \n\nloaded via a namespace (and not attached):\n [1] htmlwidgets_1.6.4 compiler_4.4.0    fastmap_1.1.1     cli_3.6.3        \n [5] tools_4.4.0       htmltools_0.5.8.1 rstudioapi_0.16.0 rmarkdown_2.26   \n [9] knitr_1.46        jsonlite_1.8.8    xfun_0.43         digest_0.6.35    \n[13] rlang_1.1.4       evaluate_0.23",
+    "text": "Build Information\nThis book was built using R version 4.4.0 (2024-04-24). For specific package versions please see the session information below:\n\n\nR version 4.4.0 (2024-04-24)\nPlatform: aarch64-apple-darwin20\nRunning under: macOS Sonoma 14.2.1\n\nMatrix products: default\nBLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib \nLAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0\n\nlocale:\n[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8\n\ntime zone: Europe/Vilnius\ntzcode source: internal\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods   base     \n\nloaded via a namespace (and not attached):\n [1] htmlwidgets_1.6.4 compiler_4.4.0    fastmap_1.2.0     cli_3.6.5        \n [5] tools_4.4.0       htmltools_0.5.8.1 rstudioapi_0.17.1 rmarkdown_2.29   \n [9] knitr_1.50        jsonlite_2.0.0    xfun_0.53         digest_0.6.37    \n[13] rlang_1.1.6       evaluate_1.0.5",
     "crumbs": [
       "Welcome"
     ]
@@ -32,9 +32,9 @@
   {
     "objectID": "index.html#license",
     "href": "index.html#license",
-    "title": "Data Visualization for Social Scientists",
+    "title": "Data and Visualization for Social Scientists",
     "section": "License",
-    "text": "License\nData Visualization for Social Science by Alfredo Hernandez Sanchez is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.Based on a work at https://github.com/alhdzsz/dviz_book.",
+    "text": "License\nData Visualization for Social Science by Alfredo Hernandez Sanchez is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.Based on a work at https://github.com/alfredo-hs/dviz_book.",
     "crumbs": [
       "Welcome"
     ]
@@ -117,6 +117,16 @@
     "text": "Chang, Winston. 2018. R Graphics Cookbook: Practical Recipes for\nVisualizing Data. Second. Sebastopol, California: O’Reilly Media.\nhttps://r-graphics.org/.\n\n\nGillespie, Colin, and Robin Lovelace. 2016. Efficient r Programming:\nA Practical Guide to Smarter Programming. Sebastopol, California:\nO’Reilly Media. https://csgillespie.github.io/efficientR/.\n\n\nGrolemund, Garrett. 2014. Hands-on Programming with r: Write Your\nOwn Functions and Simulations. Sebastopol, California: O’Reilly\nMedia. https://rstudio-education.github.io/hopr/.\n\n\nGrolemund, Garrett, and Hadley Wickham. 2016. R for Data\nScience. Sebastopol, California: O’Reilly Media. https://r4ds.had.co.nz/.\n\n\nLong, JD, and Paul Teetor. 2019. R Cookbook: Proven Recipes for Data\nAnalysis, Statistics, and Graphics. Second. Sebastopol, California:\nO’Reilly Media. https://rc2e.com/.\n\n\nMcmanus, Ian, and Paul Gesiak. 2014. “Experimenting with Mondrian:\nComparing the Method of Production with the Method of Choice.”\nIn. https://doi.org/10.13140/2.1.1561.2967.\n\n\nSilge, Julia, and David Robinson. 2017. Text Mining with r: A Tidy\nApproach. Sebastopol, California: O’Reilly Media. https://www.tidytextmining.com/.\n\n\nVenables, W. N., D. M. Smith, and the R Core Team. 2021. An\nIntroduction to r. https://cran.r-project.org/doc/manuals/R-intro.pdf.\n\n\nWilke, Claus O. 2019. Fundamentals of Data Visualization: A Primer\non Making Informative and Compelling Figures. Sebastopol,\nCalifornia: O’Reilly Media. https://clauswilke.com/dataviz/.\n\n\nWilkinson, Leland. 2005. The Grammar of Graphics. 2nd ed. New\nYork: Springer-Verlag. https://www.springer.com/gp/book/9780387245447.\n\n\nXie, Yihui, J. J. Allaire, and Garrett Grolemund. 2018. R Markdown:\nThe Definitive Guide. Boca Raton, Florida: Chapman; Hall/CRC. https://bookdown.org/yihui/rmarkdown.\n\n\nXie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. R\nMarkdown Cookbook. Boca Raton, Florida: Chapman; Hall/CRC. https://bookdown.org/yihui/rmarkdown-cookbook.\n\n\nZinovyev, iAndrei. 2010. “Data Visualization in Political and\nSocial Sciences.” In. https://arxiv.org/abs/1008.1188.",
     "crumbs": [
       "References"
+    ]
+  },
+  {
+    "objectID": "maps/index.html",
+    "href": "maps/index.html",
+    "title": "3  Maps",
+    "section": "",
+    "text": "What is in a map.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Maps</span>"
     ]
   }
 ]

@@ -8,7 +8,11 @@ In an experiment conducted by researchers from University College London [@mcman
 
 The results suggested that people could identify the originals with some degree of accuracy ($\mu$ 54.7%, SE .40). This experiment "implies people know something about what makes a real Mondrian." In other words, we have an *intuition* of proportion and beauty.
 
-```{r mondrian-fig, echo=FALSE, fig.align='center', fig.asp=.75, fig.cap="An *attempt* at a Mondrian using `ggplot2`", message=FALSE, warning=FALSE, out.width='80%', paged.print=FALSE}
+```{r mondrian-fig, echo=TRUE, fig.align='center', fig.asp=.75, message=FALSE, warning=FALSE, out.width='80%', paged.print=FALSE}
+#| fig-cap: "An *attempt* at a Mondrian using `ggplot2`"
+#| code-fold: true
+#| code-summary: "Show code"
+
 library(ggplot2)
 library(dplyr)
 

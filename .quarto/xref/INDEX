@@ -16,5 +16,8 @@
   },
   "networks.qmd": {
     "networks.html": "268c3824"
+  },
+  "maps/index.qmd": {
+    "index.html": "28ecf28e"
   }
 }

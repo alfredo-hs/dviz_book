@@ -1,11 +1,19 @@
 
 # Welcome {.unnumbered}
 
-This book offers a gentle introduction to data visualization using R and -- occasionally -- python. In this book you will learn how to make beautiful, informative, and reproducible visualizations with examples from different social sciences. It is inspired by a course on Data Visualization that <a href="https://alhdzsz.net/" target="_blank">I</a> taught at the <a href="https://www.ibei.org/en" target="_blank">Barcelona Institute of International Studies</a>. Thus, a special thanks goes out to the many graduate students whose efforts, questions, and feedback helped greatly improve the content of this book!
+All tidy datasets are alike; each messy dataset set is messy in its own way. If you have worked with data *in the wild* you have surely experienced the **frustration** of having to spend **more time data cleaning than data analyzing**. The purpose of this book is to accompany you throughout this unfortunate yet inevitable process and offer some tricks and general guidelines that will make that journey less strenuous. 
+
+Back in the dark ages, before large language models (LLMs) became part of our every day life, I taught a course on data visualization at the <a href="https://www.ibei.org/en" target="_blank">Barcelona Institute of International Studies</a>. This book started as course notes with some code for students to tweak and adapt to their needs. Today, memorizing the syntax of `R` code is a far less marketable skill, and the fun part of data analysis and visualization is ever more accessible. However, the grunt work of data cleaning endures. 
+
+<!-- Data, much like life itself, is probably always have some chaotic element to it.  -->
+
+<!-- This book offers a gentle introduction to data visualization using R and -- occasionally -- python. In this book you will learn how to make beautiful, informative, and reproducible visualizations with examples from different social sciences. It is inspired by a course on Data Visualization that <a href="https://alhdzsz.net/" target="_blank">I</a> taught at the <a href="https://www.ibei.org/en" target="_blank">Barcelona Institute of International Studies</a>.  -->
+
+A special thanks goes out to the many graduate students whose efforts, questions, and feedback  served as inspiration for this book!
 
 ## Contact {.unnumbered}
 
-This book is in open review. If you have any questions, comments or suggestions; please contact me by [email](mailto:alhdzsz@gmail.com) or report an issue on GitHub.
+This book is in open review. If you have any questions, comments or suggestions; please contact me by [email](mailto:alhdzsz@gmail.com) or report an issue on [GitHub](https://github.com/alfredo-hs/dviz_book).
 
 ## Build Information
 
@@ -18,4 +26,4 @@ sessionInfo()
 
 ## License {.unnumbered}
 
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" alt="Creative Commons License" style="border-width:0"/></a><br />[Data Visualization for Social Science]{xmlns:dct="http://purl.org/dc/terms/" property="dct:title"} by [Alfredo Hernandez Sanchez]{xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName"} is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/alhdzsz/dviz_book" rel="dct:source">https://github.com/alhdzsz/dviz_book</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" alt="Creative Commons License" style="border-width:0"/></a><br />[Data Visualization for Social Science]{xmlns:dct="http://purl.org/dc/terms/" property="dct:title"} by [Alfredo Hernandez Sanchez]{xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName"} is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/alhdzsz/dviz_book" rel="dct:source">https://github.com/alfredo-hs/dviz_book</a>.

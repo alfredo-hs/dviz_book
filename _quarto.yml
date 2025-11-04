@@ -2,20 +2,23 @@ project:
   type: book
 
 book:
-  title: "Data Visualization for Social Scientists"
-  subtitle: "Using R!"
-  author: "Alfredo Hernandez Sanchez, PhD"
-  date: "4/5/2024"
+  title: "Data and Visualization for Social Scientists"
+  subtitle: "A guide for working with messy data in R"
+  author:
+    - name: Alfredo Hernandez Sanchez, PhD
+      orcid: 0000-0001-7643-249X
+      url: www.alfredohs.com
+  date: "today"
   reader-mode: true
-  repo-url: "https://github.com/alhdzsz/dviz_book"
+  repo-url: "https://github.com/alfredo-hs/dviz_book"
   repo-actions: [issue]
   sidebar: 
-    logo: "icon.png"
+    logo: "resources/icon.png"
   chapters:
     - index.qmd
     - intro.qmd
     - ggbasics.qmd
-    # - networks.qmd
+    - maps/index.qmd
     - references.qmd
 
 bibliography: references.bib
@@ -23,6 +26,7 @@ bibliography: references.bib
 format:
   html:
     theme: cosmo
+    css: styles.css
   pdf:
     documentclass: scrreprt
 
