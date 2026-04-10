@@ -2,7 +2,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Data and Visualization for Social Scientists",
+    "title": "Data and Visualization in R",
     "section": "",
     "text": "Welcome\nAll tidy datasets are alike; each messy dataset set is messy in its own way. If you have worked with data in the wild you have surely experienced the frustration of having to spend more time data cleaning than data analyzing. The purpose of this book is to accompany you throughout this unfortunate yet inevitable process and offer some tricks and general guidelines that will make that journey less strenuous.\nBack in the dark ages, before large language models (LLMs) became part of our every day life, I taught a course on data visualization at the Barcelona Institute of International Studies. This book started as course notes with some code for students to tweak and adapt to their needs. Today, memorizing the syntax of R code is a far less marketable skill, and the fun part of data analysis and visualization is ever more accessible. However, the grunt work of data cleaning endures.\nA special thanks goes out to the many graduate students whose efforts, questions, and feedback served as inspiration for this book!",
     "crumbs": [
@@ -12,7 +12,7 @@
   {
     "objectID": "index.html#contact",
     "href": "index.html#contact",
-    "title": "Data and Visualization for Social Scientists",
+    "title": "Data and Visualization in R",
     "section": "Contact",
     "text": "Contact\nThis book is in open review. If you have any questions, comments or suggestions; please contact me by email or report an issue on GitHub.",
     "crumbs": [
@@ -22,9 +22,9 @@
   {
     "objectID": "index.html#build-information",
     "href": "index.html#build-information",
-    "title": "Data and Visualization for Social Scientists",
+    "title": "Data and Visualization in R",
     "section": "Build Information",
-    "text": "Build Information\nThis book was built using R version 4.4.0 (2024-04-24). For specific package versions please see the session information below:\n\n\nR version 4.4.0 (2024-04-24)\nPlatform: aarch64-apple-darwin20\nRunning under: macOS Sonoma 14.2.1\n\nMatrix products: default\nBLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib \nLAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0\n\nlocale:\n[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8\n\ntime zone: Europe/Vilnius\ntzcode source: internal\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods   base     \n\nloaded via a namespace (and not attached):\n [1] htmlwidgets_1.6.4 compiler_4.4.0    fastmap_1.2.0     cli_3.6.5        \n [5] tools_4.4.0       htmltools_0.5.8.1 rstudioapi_0.17.1 rmarkdown_2.29   \n [9] knitr_1.50        jsonlite_2.0.0    xfun_0.53         digest_0.6.37    \n[13] rlang_1.1.6       evaluate_1.0.5",
+    "text": "Build Information\nThis book was built using R version 4.4.0 (2024-04-24). For specific package versions please see the session information below:\n\n\nR version 4.4.0 (2024-04-24)\nPlatform: aarch64-apple-darwin20\nRunning under: macOS Sonoma 14.2.1\n\nMatrix products: default\nBLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib \nLAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0\n\nlocale:\n[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8\n\ntime zone: Europe/Vilnius\ntzcode source: internal\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods   base     \n\nloaded via a namespace (and not attached):\n [1] htmlwidgets_1.6.4 compiler_4.4.0    fastmap_1.2.0     cli_3.6.5        \n [5] tools_4.4.0       htmltools_0.5.8.1 rstudioapi_0.17.1 rmarkdown_2.29   \n [9] knitr_1.50        jsonlite_2.0.0    xfun_0.53         digest_0.6.37    \n[13] rlang_1.1.7       evaluate_1.0.5",
     "crumbs": [
       "Welcome"
     ]
@@ -32,7 +32,7 @@
   {
     "objectID": "index.html#license",
     "href": "index.html#license",
-    "title": "Data and Visualization for Social Scientists",
+    "title": "Data and Visualization in R",
     "section": "License",
     "text": "License\nData Visualization for Social Science by Alfredo Hernandez Sanchez is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.Based on a work at https://github.com/alfredo-hs/dviz_book.",
     "crumbs": [
@@ -124,7 +124,37 @@
     "href": "maps/index.html",
     "title": "3  Maps",
     "section": "",
-    "text": "What is in a map.",
+    "text": "3.1 Maps with sf\nWhat is in a map.\nThe sf package uses simple features to create maps using ggplot2 syntax and the grammar of graphics principles. An sf object is data frame or tibble in which one of the columns is called geometry and contains the coordinates for a polygonal object in a list.\nlibrary(rnaturalearth)\nlibrary(sf)\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(tidyr)\n# Let's get some country geometries (low res)\nworld &lt;- ne_countries(scale = \"small\", returnclass = \"sf\")\n# Or we can get a higher resolution!\n# world &lt;- ne_countries(scale = \"medium\", returnclass = \"sf\")\n# We use the geom_sf() in regular ggplot2 syntax\nworld %&gt;%\n  ggplot() +\n  geom_sf() +\n  geom_hline(yintercept = 0, linetype = \"dashed\")",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Maps</span>"
+    ]
+  },
+  {
+    "objectID": "maps/index.html#choropleth-maps",
+    "href": "maps/index.html#choropleth-maps",
+    "title": "3  Maps",
+    "section": "3.2 Choropleth Maps",
+    "text": "3.2 Choropleth Maps\nA choropleth map is a thematic map where areas (like regions, states, or countries) are colored or shaded in proportion to a statistical variable. This variable could be anything from population density to GDP per capita.\n\n3.2.1 Bivariate Choropleth Maps\n\n\nShow code\nlibrary(biscale)\nlibrary(eurostat)\nlibrary(giscoR)\nlibrary(cowplot)\n\neurdf &lt;- get_eurostat(id = \"inn_cis12_fin\") \n\neurdf_small &lt;- eurdf %&gt;% \n  filter(nace_r2 == \"K\",\n         effect == \"SUCC\",\n         sizeclas == \"TOTAL\",\n         enterpr == \"INN\",\n         unit == \"PC\"\n         ) %&gt;% \n  select(\n    geo,\n    values,\n    fin_typ\n    ) %&gt;% \n  pivot_wider(\n    names_from = fin_typ, \n    values_from = values\n    ) \n\neurmap &lt;- get_eurostat_geospatial(nuts_level = 0, year = 2024)\n\neurmap &lt;- eurmap %&gt;% \n  left_join(eurdf_small) \n\neurmap_bi &lt;- bi_class(\n  eurmap,\n  x = DEBT,\n  y = EQUIT,\n  style = \"quantile\",\n  dim = 3   # 3x3 grid = 9 classes\n)\n\nmap &lt;- eurmap_bi %&gt;%\n  ggplot() +\n  geom_sf(aes(fill = bi_class), \n          color = \"white\", \n          show.legend = F,\n          size = 0.1) +\n  coord_sf(\n    xlim = c(-25, 45),  \n    ylim = c(34, 72)   \n  ) +\n  bi_scale_fill(pal = \"DkBlue\", dim = 3) +\n  bi_theme() +\n  theme_void()\n\nlegend &lt;- bi_legend(pal = \"DkBlue\",\n                    dim = 3,\n                    xlab = \"Debt \",\n                    ylab = \"Equity\",\n                    size = 10) +\n  theme(\n    plot.background = element_rect(\n      fill = NA)\n    )\n\nfinalPlot &lt;- ggdraw() +\n  draw_plot(map, 0, 0, 1, 1) +\n  draw_plot(legend, \n            .15,\n            .55,  \n            .25, \n            .25) \n\nfinalPlot\n\n\n\n\n\nA bivariate map",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Maps</span>"
+    ]
+  },
+  {
+    "objectID": "maps/index.html#interactive-maps-with-leaflet",
+    "href": "maps/index.html#interactive-maps-with-leaflet",
+    "title": "3  Maps",
+    "section": "3.3 Interactive Maps with leaflet",
+    "text": "3.3 Interactive Maps with leaflet",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Maps</span>"
+    ]
+  },
+  {
+    "objectID": "maps/index.html#dashboard",
+    "href": "maps/index.html#dashboard",
+    "title": "3  Maps",
+    "section": "3.4 Dashboard",
+    "text": "3.4 Dashboard",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Maps</span>"
     ]

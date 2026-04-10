@@ -2,8 +2,8 @@ project:
   type: book
 
 book:
-  title: "Data and Visualization for Social Scientists"
-  subtitle: "A guide for working with messy data in R"
+  title: "Data and Visualization in R"
+  subtitle: "A practical guide for social scientists"
   author:
     - name: Alfredo Hernandez Sanchez, PhD
       orcid: 0000-0001-7643-249X
@@ -18,7 +18,7 @@ book:
     - index.qmd
     - intro.qmd
     - ggbasics.qmd
-    - maps/index.qmd
+    # - maps/index.qmd
     - references.qmd
 
 bibliography: references.bib
@@ -30,5 +30,9 @@ format:
   pdf:
     documentclass: scrreprt
 
+execute:
+  warning: false
+  message: false
+  
 editor: source
 
