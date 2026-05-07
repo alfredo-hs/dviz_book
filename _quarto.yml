@@ -20,7 +20,6 @@ book:
     - ggbasics.qmd
     - webscraping.qmd
     - dashboards.qmd
-    # - maps/index.qmd
     - references.qmd
 
 bibliography: references.bib
@@ -28,7 +27,7 @@ bibliography: references.bib
 format:
   html:
     theme: cosmo
-    css: styles.css
+    css: resources/styles.css
 
 execute:
   warning: false
