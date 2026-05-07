@@ -1,0 +1,353 @@
+# Webscraping {#scraping}
+
+## Introduction
+
+A common problem in web scraping is that the page you see in your browser is not the same as the HTML your scraper first receives. Many websites use JavaScript to populate content after the initial HTML is loaded, which means that a [simple function](https://guides.lib.utexas.edu/web-scrapping/scraping-with-r) such as `rvest::read_html()` may return only a partial skeleton rather than the data you want. This tutorial offers a practical introduction to scraping those dynamic pages in R with an automated Firefox browser controlled through `RSelenium`. It covers the main concepts, ethical considerations, minimal setup, and a reproducible example.
+
+It is important to consider that **Selenium should not be the default**. In most cases, simpler tools should come first. Selenium is best treated as a fallback for **tasks that require a closer approximation of a real browsing session**, such as clicking, scrolling, or handling rendered-state pagination. Because it is a heavier and more invasive tool, it should be used only when there is a genuine need, and never to bypass CAPTCHAs, anti-bot systems, or access controls.
+
+## Key concepts
+
+### Web scraping and HTML
+
+Web scraping is the practice of collecting information from web pages by reading the page source, identifying the parts that contain the data you want, and extracting those pieces into a structured format such as a data frame. In the simplest case, you download the raw HTML and parse it. In harder cases, you need a live browser because the page content is assembled after load through scripts, clicks, or scrolling.
+
+HTML is the [markup language](https://www.w3schools.com/html/html_intro.asp) that gives a web page its structure. It defines elements such as headings, paragraphs, links, tables, and divs through tags and attributes. Once the browser reads that HTML, it represents the page as a structured document tree. In that structure, the individual pieces are called nodes. Some nodes are elements, some are text, and some are attributes or other document parts. In web scraping, we select specific elements or nodes from the HTML document to pull what we need, such as text, tables, or links. We can target these nodes using [CSS selectors](https://www.w3schools.com/css/css_intro.asp). They were designed for styling, but they are also one of the main ways scrapers locate content.
+
+```{#lst-html-example .html lst-cap="The HTML example below has three elements: a quote, an author, and a link. Here the CSS selectors would be `.quote` for the quote, `#author` for the author, and `a` for the link (href). The JavaScript `script` changes the author text after the page loads, a simple example of dynamic content."}
+<div class="quote">"Hello world"</div>
+<p id="author">Ada Lovelace</p>
+<a href="/authors/ada-lovelace">Read more</a>
+
+<script>
+  document.getElementById("author").textContent = "Ada Lovelace (updated by JavaScript)";
+</script>
+```
+
+### Static vs dynamic pages
+
+A static page is one where the data you want is already present in the HTML sent by the server. In that case, a tool like `rvest::read_html()` is often enough. A dynamic page is different. The initial HTML may be sparse, and JavaScript fills in the content later after the browser loads the page, makes additional requests, or responds to user actions. That is why a page can look complete in your browser but seem empty when you inspect it through a basic scraper.[^1]
+
+[^1]: Having a dynamic page does not always mean you need Selenium, sometimes the underlying data can still be collected with a lighter live-browser approach rather than full automation. Current `rvest` even includes `read_html_live()` for some [JavaScript-rendered cases](https://rvest.tidyverse.org/reference/read_html_live.html).
+
+### Why Selenium?
+
+[Selenium](https://www.selenium.dev/) is a browser automation framework that uses WebDriver to control a real browser session. A browser driver is the bridge between your code and the browser itself. It receives WebDriver commands and controls the browser on your behalf. When you tell Selenium to open a page, click a button, or read an element, those instructions pass through the driver to Firefox. Selenium becomes useful when the page depends on JavaScript, when interaction is required to reveal data, or when you want to reproduce an actual browsing path rather than only parse raw HTML.
+
+## Ethical Considerations
+
+Ethical web scraping starts with a simple rule. **Do the least invasive thing that will get the job done.** Before writing a scraper, check whether the site offers an API or a downloadable dataset, and read the site’s terms and `robots.txt` document. 
+
+```{#lst-robots .text lst-cap="Minimal example of a robots.txt file"}
+User-agent: *
+Disallow: /admin/
+Disallow: /private/
+Allow: /public/
+
+Sitemap: https://example.org/sitemap.xml
+```
+
+The `robots.txt` standard exists to tell automated clients which parts of a site they are requested to crawl, but it is not a form of authorization in itself, so it should be treated as one part of a broader judgment rather than as a green light for unlimited collection. In general, it is important to limit request frequency and avoid aggressive loops. Scrape only what you need, especially when personal data could be involved.[^2]
+
+[^2]: In R, the `polite` [package](https://dmi3kno.github.io/polite/) is useful precisely because it operationalizes this mindset. It checks `robots.txt`, caches requests, and enforces delays rather than encouraging aggressive repetition.
+
+::: {.callout-warning}
+## A practical warning
+
+If your scraper sends too many requests too quickly, opens several browser sessions at once, or retries aggressively, it can **resemble abusive automation even when your intention is harmless**. In practice, this may lead to rate limits, IP blocks, or service degradation for others. 
+:::
+
+With `RSelenium`, the **ethical threshold should be higher**. A browser automation workflow is heavier than a simple `rvest` request because it mimics a real browsing session and can generate many more page loads, clicks, and background requests. It is especially important to **start small**, **pause between requests**, **identify your client** clearly when possible, and **stop immediately if the site signals** that you are no longer welcome.
+
+Selenium should not be used to bypass CAPTCHAs, anti-bot controls, or access restrictions. Even when the target content is public, aggressive loops, parallel sessions, or rapid-fire retries can look like abusive bot traffic and may trigger rate limiting or defensive systems designed to protect sites from denial-of-service patterns, scraping abuse, and resource exhaustion.
+
+## `RSelenium` Minimal Example
+
+This section shows a minimal example of an automated browser workflow with `RSelenium`. We load three necesary pacakges[^3] and explore the (FIRSA)[https://firsa.eu] homepage with an automated Firefox session (identified with a 🤖 icon). The code screencast is shown in @fig-rselenium-demo. The script goes over the following steps:
+
+[^3]: `RSelenium` controls the browser, `wdman` helps launch the Selenium service and browser driver, and `netstat` is used here to pick a free local port.
+
+- It starts a Firefox browser session through `rsDriver()` and stores the client connection in `remDR`. This is the object that sends instructions to the browser.
+
+- It opens a URL with `remDR$navigate()`.
+
+- It moves the mouse and double-clicks. `mouseMoveToLocation(x = 0, y = 200)` moves the pointer relative to its current position.
+
+- It scrolls down and back up using JavaScript. The commands `window.scrollBy(0, 800)` and `window.scrollBy(0, -300)` tell the browser to move the visible page vertically.
+
+- It finds the `Posts` link with XPath and clicks it. This shows one way of targeting an element by its *visible text* rather than by its class.
+
+- It returns to the previous page with `goBack()`.
+
+- It then finds a Bluesky link using a *CSS selector* and clicks it. 
+
+- Finally, it closes the browser session with `quit()` and stops the local Selenium server with `remote_firefox$server$stop()`.
+
+```{r}
+#| message: false
+#| warning: false
+#| eval: false
+#| echo: true
+
+# Load minimal libraries
+library(RSelenium)
+library(wdman)
+library(netstat)
+
+# Define the remote browser
+remote_firefox <- rsDriver(
+  browser = "firefox",
+  chromever = NULL,
+  phantomver = NULL,
+  verbose = FALSE,
+  port = free_port()
+)
+remDR <- remote_firefox$client
+
+# Go to website
+remDR$navigate("https://firsa.eu")
+
+# Move mouse and click
+remDR$mouseMoveToLocation(x = 0, y = 200)
+remDR$doubleclick()
+
+# Scroll down by 800 pixels
+remDR$executeScript("window.scrollBy(0, 800);")
+
+# Scroll up by 300 pixels
+remDR$executeScript("window.scrollBy(0, -300);")
+
+# Find a link and click (xpath)
+remDR$findElement(
+  using = "xpath",
+  value = "//a[normalize-space()='Posts']"
+)$clickElement()
+
+# Return to prior page
+remDR$goBack()
+
+# Find a link and click (css)
+remDR$findElement(
+  using = "css selector",
+  value = "a[href*='bsky.app']"
+)$clickElement()
+
+# End session and stop server
+remDR$quit()
+remote_firefox$server$stop()
+
+```
+
+::: {#fig-rselenium-demo}
+
+{{< video https://www.youtube.com/watch?v=pfcCSgcKAKA
+    title="RSelenium browser navigation demo"
+    aria-label="Screencast showing a minimal RSelenium browser navigation example in R"
+>}}
+
+*A short screencast showing a minimal RSelenium workflow in R: navigating to a webpage, moving through the page, clicking links, and closing the browser session.*
+
+:::
+
+::: {.callout-warning}
+## A small warning
+
+**Browser automation can be sensitive** to page layout, screen size, timing, and small changes in the site structure. On a narrower window, for example, navigation links may collapse into a menu or move to a different part of the page, which can **break selectors** or make mouse movements behave differently. 
+:::
+
+## Making a corpus (full workflow)
+
+A common reason to scrape the web is to build a *corpus*: a structured collection of texts that can later be explored, cleaned, and analyzed. In this section, we use the JavaScript version of [Quotes to Scrape](https://quotes.toscrape.com/js/) as a small and safe example. Here we show how Selenium can open a rendered page, wait for the content to appear, extract repeated text elements and their metadata, and combine the results across multiple pages into a *single data frame*. In this example, we use a **headless browser**, so Firefox runs without opening a visible browser window. The script goes over the following steps:
+
+- Define a few helper functions to safely extract text and handle missing elements.
+- Wait for the JavaScript-rendered quote blocks to appear before trying to scrape them.
+- Extract one page at a time into a tidy data frame.
+- Launch a headless Firefox session with Selenium.
+- Loop over paginated pages, scrape each one, and store the results.
+- Combine all pages into a single corpus data frame.
+
+```{r}
+#| message: false
+#| warning: false
+#| eval: false
+#| echo: true
+
+# -------------------------
+# Rselenium Headless Example
+# -------------------------
+
+# Load the minimal packages needed for this workflow
+library(RSelenium)
+library(wdman)
+library(netstat)
+library(dplyr)
+
+# -----------------------------------
+# 1. Helper functions for extraction
+# -----------------------------------
+
+# Safely extract text from a single child element. If the element does not exist, return NA.
+safe_element_text <- function(node, css) {
+  tryCatch(
+    node$findChildElement(using = "css selector", value = css)$getElementText()[[1]],
+    error = function(e) NA_character_
+  )
+}
+
+# Safely extract text from multiple child elements. This is useful for tags, where a quote can have more than one tag.
+safe_elements_text <- function(node, css) {
+  elems <- tryCatch(
+    node$findChildElements(using = "css selector", value = css),
+    error = function(e) list()
+  )
+  
+  if (length(elems) == 0) return(NA_character_)
+  
+  vals <- vapply(
+    elems,
+    function(x) x$getElementText()[[1]],
+    character(1)
+  )
+  
+  vals <- vals[nzchar(vals)]
+  if (length(vals) == 0) NA_character_ else paste(vals, collapse = ", ")
+}
+
+# -----------------------------------------
+# 2. Wait until the rendered content exists
+# -----------------------------------------
+
+# Because this page is rendered with JavaScript, we do not want to scrape immediately after navigation. 
+wait_for_quotes <- function(remDr, timeout = 10, poll = 0.5) {
+  n_tries <- ceiling(timeout / poll)
+  
+  for (i in seq_len(n_tries)) {
+    nodes <- tryCatch(
+      remDr$findElements(using = "css selector", value = ".quote"),
+      error = function(e) list()
+    )
+    
+    if (length(nodes) > 0) return(nodes)
+    Sys.sleep(poll)
+  }
+  
+  list()
+}
+
+# ---------------------------------
+# 3. Extract one page of the corpus
+# ---------------------------------
+
+# This function takes the current page and turns all quote blocks into a tidy data frame.
+extract_quotes_page <- function(remDr, page_number) {
+  quote_nodes <- wait_for_quotes(remDr, timeout = 10, poll = 0.5)
+  
+  if (length(quote_nodes) == 0) {
+    return(tibble())
+  }
+  
+  bind_rows(lapply(quote_nodes, function(q) {
+    tibble(
+      quote  = safe_element_text(q, ".text"),
+      author = safe_element_text(q, ".author"),
+      tags   = safe_elements_text(q, ".tag"),
+      page   = as.character(page_number)
+    )
+  }))
+}
+
+# ------------------------------------------
+# 4. Launch Selenium and loop over the pages
+# ------------------------------------------
+
+scrape_quotes_selenium <- function(
+  base_url = "https://quotes.toscrape.com/js/",
+  max_pages = 10L
+) {
+  
+  # Start a headless Firefox session
+  rD <- rsDriver(
+    browser = "firefox",
+    port = free_port(),
+    verbose = FALSE,
+    check = TRUE,
+    geckover = "latest",
+    chromever = NULL,
+    iedrver = NULL,
+    phantomver = NULL,
+    extraCapabilities = list(
+      "moz:firefoxOptions" = list(
+        args = list("-headless")
+      )
+    )
+  )
+  
+  remDr <- rD$client
+  remDr$open()
+  
+  # Clean up the browser and Selenium server when the function ends
+  on.exit({
+    try(remDr$quit(), silent = TRUE)
+    try(rD$server$stop(), silent = TRUE)
+  }, add = TRUE)
+  
+  # Create an empty list to store each scraped page
+  results <- vector("list", max_pages)
+  
+  # Loop over paginated pages
+  for (page_number in seq_len(max_pages)) {
+    
+    page_url <- if (page_number == 1L) {
+      base_url
+    } else {
+      paste0(base_url, "page/", page_number, "/")
+    }
+    
+    # Open the page in Firefox
+    remDr$navigate(page_url)
+    
+    # Small pause to avoid scraping too aggressively
+    Sys.sleep(runif(1, 0.8, 1.2))
+    
+    # Extract the rendered content from the current page
+    page_df <- extract_quotes_page(remDr, page_number)
+    
+    # Stop if we reached a page with no quotes
+    if (nrow(page_df) == 0) {
+      results <- results[seq_len(page_number - 1L)]
+      break
+    }
+    
+    # Store the page results
+    results[[page_number]] <- page_df
+    
+    # Another small pause between pages
+    Sys.sleep(runif(1, 0.4, 0.8))
+  }
+  
+  # Combine all pages into one corpus data frame
+  bind_rows(results)
+}
+
+# ----------------------------
+# 5. Run the scraper
+# ----------------------------
+
+quotes_selenium_df <- scrape_quotes_selenium()
+saveRDS(quotes_selenium_df, "quotes_selenium_df.rds")
+
+``` 
+
+```{r}
+#| message: false
+#| warning: false
+#| eval: true
+#| echo: false
+
+library(kableExtra)
+readRDS("input/quotes_selenium_df.rds") %>% kbl() %>% scroll_box(height = "600px")
+```
+
+## Conclusion
+
+`RSelenium` is useful when a website does not simply hand over the data in its initial HTML. If the content appears only after rendering, clicking, scrolling, or client-side pagination, browser automation can make the difference between an empty scrape and a usable dataset. However, it is a fallback, not a first resort. It is slower, more fragile, and more demanding than simpler tools, so it should be used only when the structure of the page genuinely requires it. **Start with the lightest approach that works, move to Selenium when there is a clear reason**, and keep the workflow limited and respectful of the target website's policies.

@@ -19,5 +19,8 @@
   },
   "maps/index.qmd": {
     "index.html": "28ecf28e"
+  },
+  "webscraping.qmd": {
+    "webscraping.html": "d5a47eb6"
   }
 }
