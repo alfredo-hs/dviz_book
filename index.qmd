@@ -2,10 +2,11 @@
 # Welcome {.unnumbered}
 
 All tidy datasets are alike; each messy dataset set is messy in its own way. If you have worked with data *in the wild* you have surely experienced the **frustration** of having to spend **more time data cleaning than data analyzing**. The purpose of this book is to accompany you throughout this unfortunate yet inevitable process and offer some tricks and general guidelines that will make that journey less strenuous. 
-
 Back in the dark ages, before large language models (LLMs) became part of our every day life, I taught a course on data visualization at the <a href="https://www.ibei.org/en" target="_blank">Barcelona Institute of International Studies</a>. This book started as course notes with some code for students to tweak and adapt to their needs. Today, memorizing the syntax of `R` code is a far less marketable skill, and the fun part of data analysis and visualization is ever more accessible. However, the grunt work of data cleaning endures. 
 
 A special thanks goes out to the many students whose efforts, questions, and feedback  served as inspiration for this book!
+
+<!-- quarto publish quarto-pub -->
 
 ## Contact {.unnumbered}
 
@@ -18,7 +19,6 @@ This book was built using `r version$version.string`. For specific package versi
 ```{r echo=FALSE}
 sessionInfo()
 ```
-
 
 ## License {.unnumbered}
 

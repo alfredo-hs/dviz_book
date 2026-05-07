@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Data and Visualization in R",
     "section": "",
-    "text": "Welcome\nAll tidy datasets are alike; each messy dataset set is messy in its own way. If you have worked with data in the wild you have surely experienced the frustration of having to spend more time data cleaning than data analyzing. The purpose of this book is to accompany you throughout this unfortunate yet inevitable process and offer some tricks and general guidelines that will make that journey less strenuous.\nBack in the dark ages, before large language models (LLMs) became part of our every day life, I taught a course on data visualization at the Barcelona Institute of International Studies. This book started as course notes with some code for students to tweak and adapt to their needs. Today, memorizing the syntax of R code is a far less marketable skill, and the fun part of data analysis and visualization is ever more accessible. However, the grunt work of data cleaning endures.\nA special thanks goes out to the many students whose efforts, questions, and feedback served as inspiration for this book!",
+    "text": "Welcome\nAll tidy datasets are alike; each messy dataset set is messy in its own way. If you have worked with data in the wild you have surely experienced the frustration of having to spend more time data cleaning than data analyzing. The purpose of this book is to accompany you throughout this unfortunate yet inevitable process and offer some tricks and general guidelines that will make that journey less strenuous. Back in the dark ages, before large language models (LLMs) became part of our every day life, I taught a course on data visualization at the Barcelona Institute of International Studies. This book started as course notes with some code for students to tweak and adapt to their needs. Today, memorizing the syntax of R code is a far less marketable skill, and the fun part of data analysis and visualization is ever more accessible. However, the grunt work of data cleaning endures.\nA special thanks goes out to the many students whose efforts, questions, and feedback served as inspiration for this book!",
     "crumbs": [
       "Welcome"
     ]
@@ -94,7 +94,7 @@
     "href": "ggbasics.html#example",
     "title": "2  The Grammar of Graphics",
     "section": "2.3 Example",
-    "text": "2.3 Example\nTo make our first ggplot plot, we will use the mtcars data set as an example.\n\ndata(\"mtcars\")\n\nThe cars data set has 32 observations and 11 variables. This data set comes pre-loaded with R and it often used in examples. Let’s see what is inside!\n\n\n\n\nTable 2.1: The Motor Trend Car Road Tests Data Set\n\n\n\n\n\n\n\n\nmpg\ncyl\ndisp\nhp\ndrat\nwt\nqsec\nvs\nam\ngear\ncarb\n\n\n\n\nMazda RX4\n21.0\n6\n160.0\n110\n3.90\n2.620\n16.46\n0\n1\n4\n4\n\n\nMazda RX4 Wag\n21.0\n6\n160.0\n110\n3.90\n2.875\n17.02\n0\n1\n4\n4\n\n\nDatsun 710\n22.8\n4\n108.0\n93\n3.85\n2.320\n18.61\n1\n1\n4\n1\n\n\nHornet 4 Drive\n21.4\n6\n258.0\n110\n3.08\n3.215\n19.44\n1\n0\n3\n1\n\n\nHornet Sportabout\n18.7\n8\n360.0\n175\n3.15\n3.440\n17.02\n0\n0\n3\n2\n\n\nValiant\n18.1\n6\n225.0\n105\n2.76\n3.460\n20.22\n1\n0\n3\n1\n\n\nDuster 360\n14.3\n8\n360.0\n245\n3.21\n3.570\n15.84\n0\n0\n3\n4\n\n\nMerc 240D\n24.4\n4\n146.7\n62\n3.69\n3.190\n20.00\n1\n0\n4\n2\n\n\nMerc 230\n22.8\n4\n140.8\n95\n3.92\n3.150\n22.90\n1\n0\n4\n2\n\n\nMerc 280\n19.2\n6\n167.6\n123\n3.92\n3.440\n18.30\n1\n0\n4\n4\n\n\nMerc 280C\n17.8\n6\n167.6\n123\n3.92\n3.440\n18.90\n1\n0\n4\n4\n\n\nMerc 450SE\n16.4\n8\n275.8\n180\n3.07\n4.070\n17.40\n0\n0\n3\n3\n\n\nMerc 450SL\n17.3\n8\n275.8\n180\n3.07\n3.730\n17.60\n0\n0\n3\n3\n\n\nMerc 450SLC\n15.2\n8\n275.8\n180\n3.07\n3.780\n18.00\n0\n0\n3\n3\n\n\nCadillac Fleetwood\n10.4\n8\n472.0\n205\n2.93\n5.250\n17.98\n0\n0\n3\n4\n\n\nLincoln Continental\n10.4\n8\n460.0\n215\n3.00\n5.424\n17.82\n0\n0\n3\n4\n\n\nChrysler Imperial\n14.7\n8\n440.0\n230\n3.23\n5.345\n17.42\n0\n0\n3\n4\n\n\nFiat 128\n32.4\n4\n78.7\n66\n4.08\n2.200\n19.47\n1\n1\n4\n1\n\n\nHonda Civic\n30.4\n4\n75.7\n52\n4.93\n1.615\n18.52\n1\n1\n4\n2\n\n\nToyota Corolla\n33.9\n4\n71.1\n65\n4.22\n1.835\n19.90\n1\n1\n4\n1\n\n\nToyota Corona\n21.5\n4\n120.1\n97\n3.70\n2.465\n20.01\n1\n0\n3\n1\n\n\nDodge Challenger\n15.5\n8\n318.0\n150\n2.76\n3.520\n16.87\n0\n0\n3\n2\n\n\nAMC Javelin\n15.2\n8\n304.0\n150\n3.15\n3.435\n17.30\n0\n0\n3\n2\n\n\nCamaro Z28\n13.3\n8\n350.0\n245\n3.73\n3.840\n15.41\n0\n0\n3\n4\n\n\nPontiac Firebird\n19.2\n8\n400.0\n175\n3.08\n3.845\n17.05\n0\n0\n3\n2\n\n\nFiat X1-9\n27.3\n4\n79.0\n66\n4.08\n1.935\n18.90\n1\n1\n4\n1\n\n\nPorsche 914-2\n26.0\n4\n120.3\n91\n4.43\n2.140\n16.70\n0\n1\n5\n2\n\n\nLotus Europa\n30.4\n4\n95.1\n113\n3.77\n1.513\n16.90\n1\n1\n5\n2\n\n\nFord Pantera L\n15.8\n8\n351.0\n264\n4.22\n3.170\n14.50\n0\n1\n5\n4\n\n\nFerrari Dino\n19.7\n6\n145.0\n175\n3.62\n2.770\n15.50\n0\n1\n5\n6\n\n\nMaserati Bora\n15.0\n8\n301.0\n335\n3.54\n3.570\n14.60\n0\n1\n5\n8\n\n\nVolvo 142E\n21.4\n4\n121.0\n109\n4.11\n2.780\n18.60\n1\n1\n4\n2\n\n\n\n\n\n\n\n\n\n\nOnce the data has been loaded, let’s use the pipe operator to do some cleaning. In the code below, we are creating a new object called df - a common way of naming data frames - and filling it with the mtcars data with some modifications. We are asking R to a) take the mtcars data, b) and then %&gt;% select four variables, c) and then %&gt;% give them new name. This pipeline is saved into the new object df.\n\ndf &lt;- mtcars %&gt;% \n  select(cyl, mpg, hp, am) %&gt;% \n  rename(cylinders=cyl,\n         mileage=mpg,\n         horsepower=hp,\n         transmission=am) \n\nWith this df stored in our environment, we can start making plots. Let’s begin with a histogram that shows the distribution of mileage across the 32 variables in our data set. For this we will use geom_histogram.\n\ndf %&gt;% #Our Data \n  ggplot(aes(x= mileage))+ #Our Aesthetics\n  geom_histogram() #Our Layer\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\n\nA histogram with default settings\n\n\n\n\nFigure @ref(fig:hist-fig) shows us our very first ggplot, which shows the number of observations at each of the binned levels. From this plot we know that most cars in our data set do around 15 miles per gallon. However, it is not very nice looking! We can improve this by adding more parameters.\nYou might notice that below the code R is giving us a warning: stat_bin() using bins = 30. Pick better value with binwidth. Here the software is hinting that we might want to change the number of bars (bins) or their width (binwidth) in our plot to make it more informative.3 In figure @ref(fig:hist2-fig) we change the number of bins to 5 inside our geom_histogram layer, and also declare the color of the column fill (darkgray) and the outline (black).\n\ndf %&gt;% \n  ggplot(aes(x= mileage))+ \n  geom_histogram(bins = 5, fill=\"darkgray\", color=\"black\") \n\n\n\n\nA nicer looking histogram\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWilkinson, Leland. 2005. The Grammar of Graphics. 2nd ed. New York: Springer-Verlag. https://www.springer.com/gp/book/9780387245447.",
+    "text": "2.3 Example\nTo make our first ggplot plot, we will use the mtcars data set as an example.\n\ndata(\"mtcars\")\n\nThe cars data set has 32 observations and 11 variables. This data set comes pre-loaded with R and it often used in examples. Let’s see what is inside!\n\n\n\n\nTable 2.1: The Motor Trend Car Road Tests Data Set\n\n\n\n\n\n\n\n\nmpg\ncyl\ndisp\nhp\ndrat\nwt\nqsec\nvs\nam\ngear\ncarb\n\n\n\n\nMazda RX4\n21.0\n6\n160.0\n110\n3.90\n2.620\n16.46\n0\n1\n4\n4\n\n\nMazda RX4 Wag\n21.0\n6\n160.0\n110\n3.90\n2.875\n17.02\n0\n1\n4\n4\n\n\nDatsun 710\n22.8\n4\n108.0\n93\n3.85\n2.320\n18.61\n1\n1\n4\n1\n\n\nHornet 4 Drive\n21.4\n6\n258.0\n110\n3.08\n3.215\n19.44\n1\n0\n3\n1\n\n\nHornet Sportabout\n18.7\n8\n360.0\n175\n3.15\n3.440\n17.02\n0\n0\n3\n2\n\n\nValiant\n18.1\n6\n225.0\n105\n2.76\n3.460\n20.22\n1\n0\n3\n1\n\n\nDuster 360\n14.3\n8\n360.0\n245\n3.21\n3.570\n15.84\n0\n0\n3\n4\n\n\nMerc 240D\n24.4\n4\n146.7\n62\n3.69\n3.190\n20.00\n1\n0\n4\n2\n\n\nMerc 230\n22.8\n4\n140.8\n95\n3.92\n3.150\n22.90\n1\n0\n4\n2\n\n\nMerc 280\n19.2\n6\n167.6\n123\n3.92\n3.440\n18.30\n1\n0\n4\n4\n\n\nMerc 280C\n17.8\n6\n167.6\n123\n3.92\n3.440\n18.90\n1\n0\n4\n4\n\n\nMerc 450SE\n16.4\n8\n275.8\n180\n3.07\n4.070\n17.40\n0\n0\n3\n3\n\n\nMerc 450SL\n17.3\n8\n275.8\n180\n3.07\n3.730\n17.60\n0\n0\n3\n3\n\n\nMerc 450SLC\n15.2\n8\n275.8\n180\n3.07\n3.780\n18.00\n0\n0\n3\n3\n\n\nCadillac Fleetwood\n10.4\n8\n472.0\n205\n2.93\n5.250\n17.98\n0\n0\n3\n4\n\n\nLincoln Continental\n10.4\n8\n460.0\n215\n3.00\n5.424\n17.82\n0\n0\n3\n4\n\n\nChrysler Imperial\n14.7\n8\n440.0\n230\n3.23\n5.345\n17.42\n0\n0\n3\n4\n\n\nFiat 128\n32.4\n4\n78.7\n66\n4.08\n2.200\n19.47\n1\n1\n4\n1\n\n\nHonda Civic\n30.4\n4\n75.7\n52\n4.93\n1.615\n18.52\n1\n1\n4\n2\n\n\nToyota Corolla\n33.9\n4\n71.1\n65\n4.22\n1.835\n19.90\n1\n1\n4\n1\n\n\nToyota Corona\n21.5\n4\n120.1\n97\n3.70\n2.465\n20.01\n1\n0\n3\n1\n\n\nDodge Challenger\n15.5\n8\n318.0\n150\n2.76\n3.520\n16.87\n0\n0\n3\n2\n\n\nAMC Javelin\n15.2\n8\n304.0\n150\n3.15\n3.435\n17.30\n0\n0\n3\n2\n\n\nCamaro Z28\n13.3\n8\n350.0\n245\n3.73\n3.840\n15.41\n0\n0\n3\n4\n\n\nPontiac Firebird\n19.2\n8\n400.0\n175\n3.08\n3.845\n17.05\n0\n0\n3\n2\n\n\nFiat X1-9\n27.3\n4\n79.0\n66\n4.08\n1.935\n18.90\n1\n1\n4\n1\n\n\nPorsche 914-2\n26.0\n4\n120.3\n91\n4.43\n2.140\n16.70\n0\n1\n5\n2\n\n\nLotus Europa\n30.4\n4\n95.1\n113\n3.77\n1.513\n16.90\n1\n1\n5\n2\n\n\nFord Pantera L\n15.8\n8\n351.0\n264\n4.22\n3.170\n14.50\n0\n1\n5\n4\n\n\nFerrari Dino\n19.7\n6\n145.0\n175\n3.62\n2.770\n15.50\n0\n1\n5\n6\n\n\nMaserati Bora\n15.0\n8\n301.0\n335\n3.54\n3.570\n14.60\n0\n1\n5\n8\n\n\nVolvo 142E\n21.4\n4\n121.0\n109\n4.11\n2.780\n18.60\n1\n1\n4\n2\n\n\n\n\n\n\n\n\n\n\nOnce the data has been loaded, let’s use the pipe operator to do some cleaning. In the code below, we are creating a new object called df - a common way of naming data frames - and filling it with the mtcars data with some modifications. We are asking R to a) take the mtcars data, b) and then %&gt;% select four variables, c) and then %&gt;% give them new name. This pipeline is saved into the new object df.\n\ndf &lt;- mtcars %&gt;% \n  select(cyl, mpg, hp, am) %&gt;% \n  rename(cylinders=cyl,\n         mileage=mpg,\n         horsepower=hp,\n         transmission=am) \n\nWith this df stored in our environment, we can start making plots. Let’s begin with a histogram that shows the distribution of mileage across the 32 variables in our data set. For this we will use geom_histogram.\n\ndf %&gt;% #Our Data \n  ggplot(aes(x= mileage))+ #Our Aesthetics\n  geom_histogram() #Our Layer\n\n\n\n\nA histogram with default settings\n\n\n\n\nFigure @ref(fig:hist-fig) shows us our very first ggplot, which shows the number of observations at each of the binned levels. From this plot we know that most cars in our data set do around 15 miles per gallon. However, it is not very nice looking! We can improve this by adding more parameters.\nYou might notice that below the code R is giving us a warning: stat_bin() using bins = 30. Pick better value with binwidth. Here the software is hinting that we might want to change the number of bars (bins) or their width (binwidth) in our plot to make it more informative.3 In figure @ref(fig:hist2-fig) we change the number of bins to 5 inside our geom_histogram layer, and also declare the color of the column fill (darkgray) and the outline (black).\n\ndf %&gt;% \n  ggplot(aes(x= mileage))+ \n  geom_histogram(bins = 5, fill=\"darkgray\", color=\"black\") \n\n\n\n\nA nicer looking histogram\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWilkinson, Leland. 2005. The Grammar of Graphics. 2nd ed. New York: Springer-Verlag. https://www.springer.com/gp/book/9780387245447.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>The Grammar of Graphics</span>"
     ]
@@ -107,56 +107,6 @@
     "text": "These principles are: a) each variable should have its own column, b) each observation should have its own row, and c) each value should have its own cell.↩︎\nFor Windows users, you can use the RStudio short cut ctrl + shift + m to write this pipe %&gt;% operator.↩︎\nMost other software will give you a default based on some parameter such as the Freedman-Diaconis rule, ggplot does not do this, forcing you to experiment with different parameters that best reflect your data.↩︎",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>The Grammar of Graphics</span>"
-    ]
-  },
-  {
-    "objectID": "references.html",
-    "href": "references.html",
-    "title": "References",
-    "section": "",
-    "text": "Chang, Winston. 2018. R Graphics Cookbook: Practical Recipes for\nVisualizing Data. Second. Sebastopol, California: O’Reilly Media.\nhttps://r-graphics.org/.\n\n\nGillespie, Colin, and Robin Lovelace. 2016. Efficient r Programming:\nA Practical Guide to Smarter Programming. Sebastopol, California:\nO’Reilly Media. https://csgillespie.github.io/efficientR/.\n\n\nGrolemund, Garrett. 2014. Hands-on Programming with r: Write Your\nOwn Functions and Simulations. Sebastopol, California: O’Reilly\nMedia. https://rstudio-education.github.io/hopr/.\n\n\nGrolemund, Garrett, and Hadley Wickham. 2016. R for Data\nScience. Sebastopol, California: O’Reilly Media. https://r4ds.had.co.nz/.\n\n\nLong, JD, and Paul Teetor. 2019. R Cookbook: Proven Recipes for Data\nAnalysis, Statistics, and Graphics. Second. Sebastopol, California:\nO’Reilly Media. https://rc2e.com/.\n\n\nMcmanus, Ian, and Paul Gesiak. 2014. “Experimenting with Mondrian:\nComparing the Method of Production with the Method of Choice.”\nIn. https://doi.org/10.13140/2.1.1561.2967.\n\n\nSilge, Julia, and David Robinson. 2017. Text Mining with r: A Tidy\nApproach. Sebastopol, California: O’Reilly Media. https://www.tidytextmining.com/.\n\n\nVenables, W. N., D. M. Smith, and the R Core Team. 2021. An\nIntroduction to r. https://cran.r-project.org/doc/manuals/R-intro.pdf.\n\n\nWilke, Claus O. 2019. Fundamentals of Data Visualization: A Primer\non Making Informative and Compelling Figures. Sebastopol,\nCalifornia: O’Reilly Media. https://clauswilke.com/dataviz/.\n\n\nWilkinson, Leland. 2005. The Grammar of Graphics. 2nd ed. New\nYork: Springer-Verlag. https://www.springer.com/gp/book/9780387245447.\n\n\nXie, Yihui, J. J. Allaire, and Garrett Grolemund. 2018. R Markdown:\nThe Definitive Guide. Boca Raton, Florida: Chapman; Hall/CRC. https://bookdown.org/yihui/rmarkdown.\n\n\nXie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. R\nMarkdown Cookbook. Boca Raton, Florida: Chapman; Hall/CRC. https://bookdown.org/yihui/rmarkdown-cookbook.\n\n\nZinovyev, iAndrei. 2010. “Data Visualization in Political and\nSocial Sciences.” In. https://arxiv.org/abs/1008.1188.",
-    "crumbs": [
-      "References"
-    ]
-  },
-  {
-    "objectID": "maps/index.html",
-    "href": "maps/index.html",
-    "title": "3  Maps",
-    "section": "",
-    "text": "3.1 Maps with sf\nWhat is in a map.\nThe sf package uses simple features to create maps using ggplot2 syntax and the grammar of graphics principles. An sf object is data frame or tibble in which one of the columns is called geometry and contains the coordinates for a polygonal object in a list.\nlibrary(rnaturalearth)\nlibrary(sf)\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(tidyr)\n# Let's get some country geometries (low res)\nworld &lt;- ne_countries(scale = \"small\", returnclass = \"sf\")\n# Or we can get a higher resolution!\n# world &lt;- ne_countries(scale = \"medium\", returnclass = \"sf\")\n# We use the geom_sf() in regular ggplot2 syntax\nworld %&gt;%\n  ggplot() +\n  geom_sf() +\n  geom_hline(yintercept = 0, linetype = \"dashed\")",
-    "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Maps</span>"
-    ]
-  },
-  {
-    "objectID": "maps/index.html#choropleth-maps",
-    "href": "maps/index.html#choropleth-maps",
-    "title": "3  Maps",
-    "section": "3.2 Choropleth Maps",
-    "text": "3.2 Choropleth Maps\nA choropleth map is a thematic map where areas (like regions, states, or countries) are colored or shaded in proportion to a statistical variable. This variable could be anything from population density to GDP per capita.\n\n3.2.1 Bivariate Choropleth Maps\n\n\nShow code\nlibrary(biscale)\nlibrary(eurostat)\nlibrary(giscoR)\nlibrary(cowplot)\n\neurdf &lt;- get_eurostat(id = \"inn_cis12_fin\") \n\neurdf_small &lt;- eurdf %&gt;% \n  filter(nace_r2 == \"K\",\n         effect == \"SUCC\",\n         sizeclas == \"TOTAL\",\n         enterpr == \"INN\",\n         unit == \"PC\"\n         ) %&gt;% \n  select(\n    geo,\n    values,\n    fin_typ\n    ) %&gt;% \n  pivot_wider(\n    names_from = fin_typ, \n    values_from = values\n    ) \n\neurmap &lt;- get_eurostat_geospatial(nuts_level = 0, year = 2024)\n\neurmap &lt;- eurmap %&gt;% \n  left_join(eurdf_small) \n\neurmap_bi &lt;- bi_class(\n  eurmap,\n  x = DEBT,\n  y = EQUIT,\n  style = \"quantile\",\n  dim = 3   # 3x3 grid = 9 classes\n)\n\nmap &lt;- eurmap_bi %&gt;%\n  ggplot() +\n  geom_sf(aes(fill = bi_class), \n          color = \"white\", \n          show.legend = F,\n          size = 0.1) +\n  coord_sf(\n    xlim = c(-25, 45),  \n    ylim = c(34, 72)   \n  ) +\n  bi_scale_fill(pal = \"DkBlue\", dim = 3) +\n  bi_theme() +\n  theme_void()\n\nlegend &lt;- bi_legend(pal = \"DkBlue\",\n                    dim = 3,\n                    xlab = \"Debt \",\n                    ylab = \"Equity\",\n                    size = 10) +\n  theme(\n    plot.background = element_rect(\n      fill = NA)\n    )\n\nfinalPlot &lt;- ggdraw() +\n  draw_plot(map, 0, 0, 1, 1) +\n  draw_plot(legend, \n            .15,\n            .55,  \n            .25, \n            .25) \n\nfinalPlot\n\n\n\n\n\nA bivariate map",
-    "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Maps</span>"
-    ]
-  },
-  {
-    "objectID": "maps/index.html#interactive-maps-with-leaflet",
-    "href": "maps/index.html#interactive-maps-with-leaflet",
-    "title": "3  Maps",
-    "section": "3.3 Interactive Maps with leaflet",
-    "text": "3.3 Interactive Maps with leaflet",
-    "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Maps</span>"
-    ]
-  },
-  {
-    "objectID": "maps/index.html#dashboard",
-    "href": "maps/index.html#dashboard",
-    "title": "3  Maps",
-    "section": "3.4 Dashboard",
-    "text": "3.4 Dashboard",
-    "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Maps</span>"
     ]
   },
   {
@@ -227,6 +177,196 @@
     "text": "Having a dynamic page does not always mean you need Selenium, sometimes the underlying data can still be collected with a lighter live-browser approach rather than full automation. Current rvest even includes read_html_live() for some JavaScript-rendered cases.↩︎\nIn R, the polite package is useful precisely because it operationalizes this mindset. It checks robots.txt, caches requests, and enforces delays rather than encouraging aggressive repetition.↩︎\nRSelenium controls the browser, wdman helps launch the Selenium service and browser driver, and netstat is used here to pick a free local port.↩︎",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Webscraping</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html",
+    "href": "dashboards.html",
+    "title": "4  Dashboards with Shiny",
+    "section": "",
+    "text": "4.1 What is a dashboard?\nA dashboard is useful when a research project produces material that is easier to explore than to summarize in a single figure or table. Many research projects generate indicators, case classifications, qualitative metadata, country profiles, interview summaries, maps, or model outputs. Some of these can be placed in a paper. Some can be placed in an appendix. But when the reader needs to filter, compare, inspect, and move between levels of detail, a static document becomes limited.\nShiny lets us build interactive web applications directly from R. This means that we can use the same language we already use for cleaning data, estimating models, and producing plots to create a small web interface around our research data.\nThis chapter introduces the basic logic of Shiny by building a small dashboard with the palmerpenguins data set. The example is simple, but the structure is the same one used in larger research dashboards. The user selects filters in the interface. The server uses those filters to subset the data. The app then updates a summary, a plot, and a table.\nThe point is not to build a perfect dashboard. The point is to understand the minimum structure of a working app.\nA dashboard is an interface for exploring data.\nA static plot answers a question chosen by the researcher. A dashboard lets the user ask a small number of related questions by changing inputs. For example, a dashboard can let users select a country, choose a time period, compare regions, inspect a table, or move between different indicators.\nFor research communication, this matters because the audience often wants to see more than the final argument. They may want to know which cases are included, how indicators change across time, whether a finding is driven by a subset of observations, or how a specific country compares with others.\nDashboards are especially useful when a project has several layers of information. A paper can explain the argument. A dashboard can make part of the evidence base easier to inspect.\nThis is also the logic behind the FIRSA dashboard. The dashboard is not a replacement for the research project. It is a way of making selected parts of the project visible, navigable, and reusable.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#what-is-r-shiny",
+    "href": "dashboards.html#what-is-r-shiny",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.2 What is R Shiny?",
+    "text": "4.2 What is R Shiny?\nA Shiny app is a web application connected to an R session.\nThe user sees a web page. Behind that page, R is running code. When the user changes something in the interface, the R code reacts and sends an updated output back to the page.\nA basic Shiny app has three parts.\nFirst, the user interface, usually called the ui, defines what the user sees. This includes the title, text, inputs, plots, tables, and layout.\nSecond, the server defines what R does. This is where we filter data, create plots, calculate summaries, and prepare tables.\nThird, shinyApp() combines the ui and the server into a working app.\n\nlibrary(shiny)\n\nui &lt;- fluidPage()\n\nserver &lt;- function(input, output) {}\n\nshinyApp(ui = ui, server = server)\n\nThis is the smallest possible template for a Shiny app. It does not show anything useful yet, but it already contains the structure we need.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#installing-the-packages",
+    "href": "dashboards.html#installing-the-packages",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.3 Installing the packages",
+    "text": "4.3 Installing the packages\nFor this chapter, we use five packages.\n\ninstall.packages(c(\n  \"shiny\",\n  \"palmerpenguins\",\n  \"dplyr\",\n  \"ggplot2\",\n  \"DT\"\n))\n\nThen we load them.\n\nlibrary(shiny)\nlibrary(palmerpenguins)\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(DT)\n\nThe shiny package creates the app. The palmerpenguins package gives us a clean demonstration data set. The dplyr package helps us filter and transform the data. The ggplot2 package creates the plot. The DT package creates an interactive table.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#the-app-file",
+    "href": "dashboards.html#the-app-file",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.4 The app file",
+    "text": "4.4 The app file\nA simple Shiny app can be written in a single file called app.R.\nThe file should usually have this structure.\n\n# packages\n\n# data\n\n# user interface\n\n# server\n\n# run app\n\nThis may look too simple, but it is a useful habit. As an app grows, it becomes easier to lose track of where things are happening. Keeping the file organized helps you debug the app later.\nFor the rest of the chapter, we will build the app one section at a time.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#preparing-the-data",
+    "href": "dashboards.html#preparing-the-data",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.5 Preparing the data",
+    "text": "4.5 Preparing the data\nWe start by loading the penguins data and converting two variables into factors.\n\npenguins &lt;- palmerpenguins::penguins |&gt;\n  mutate(\n    species = as.factor(species),\n    island = as.factor(island)\n  )\n\nThe data set contains observations on penguins from three species and three islands. For this tutorial, we will use the app to filter the data by species and island, then display a summary, a scatterplot, and a table.\nWe can quickly inspect the variables.\n\nglimpse(penguins)\n\nThe important variables for the dashboard are species, island, flipper_length_mm, and body_mass_g.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#building-the-user-interface",
+    "href": "dashboards.html#building-the-user-interface",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.6 Building the user interface",
+    "text": "4.6 Building the user interface\nThe user interface is created with fluidPage().\nThe simplest version of the interface can include only a title.\n\nui &lt;- fluidPage(\n  titlePanel(\"Palmer Penguins Shiny Demo\")\n)\n\nThis creates a web page with a title. Nothing else happens yet because we have not added inputs or outputs.\nA more useful layout separates the page into a sidebar and a main panel. The sidebar usually contains the controls. The main panel usually contains the results.\n\nui &lt;- fluidPage(\n  titlePanel(\"Palmer Penguins Shiny Demo\"),\n  \n  sidebarLayout(\n    sidebarPanel(\n      \"Inputs will go here\"\n    ),\n    \n    mainPanel(\n      \"Outputs will go here\"\n    )\n  )\n)\n\nThis layout is common because it matches the basic logic of a dashboard. The user changes something on the left. The result appears on the right.\nIn the slides for the FIRSA webinar, this structure was shown as a simple panel layout.\n\nThe same structure can be represented with code.\n\nui &lt;- fluidPage(\n  titlePanel(\"Title Panel\"),\n  \n  sidebarLayout(\n    sidebarPanel(\n      \"Side Panel\"\n    ),\n    \n    mainPanel(\n      \"Main Panel\",\n      \n      tabsetPanel(\n        tabPanel(\"Tab Panel A\"),\n        tabPanel(\"Tab Panel B\")\n      )\n    )\n  )\n)\n\nIn this chapter we will use a simple sidebar layout without tabs. For a larger research dashboard, tabs are useful when the app contains different sections, such as an overview page, a country profile page, a methods page, and a data table.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#adding-inputs",
+    "href": "dashboards.html#adding-inputs",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.7 Adding inputs",
+    "text": "4.7 Adding inputs\nInputs collect information from the user.\nIn this app, we want users to choose a species, choose an island, and decide whether to show a trend line in the plot.\nThe first input is a drop-down menu created with selectInput().\n\nselectInput(\n  inputId = \"species\",\n  label = \"Choose species\",\n  choices = c(\"All\", levels(penguins$species)),\n  selected = \"All\"\n)\n\nThe inputId is important. It is the name that the server will use to read the user selection. If the user chooses \"Adelie\", then the server can access that value through input$species.\nThe label is the text shown to the user.\nThe choices are the options available in the menu.\nThe selected value is the default option.\nWe use the same structure for island.\n\nselectInput(\n  inputId = \"island\",\n  label = \"Choose island\",\n  choices = c(\"All\", levels(penguins$island)),\n  selected = \"All\"\n)\n\nFinally, we add a checkbox for the trend line.\n\ncheckboxInput(\n  inputId = \"show_smooth\",\n  label = \"Show trend line\",\n  value = TRUE\n)\n\nA checkbox returns either TRUE or FALSE. In the server, we will use this value to decide whether to add geom_smooth() to the plot.\nNow we can place all three inputs inside the sidebar.\n\nui &lt;- fluidPage(\n  titlePanel(\"Palmer Penguins Shiny Demo\"),\n  \n  sidebarLayout(\n    sidebarPanel(\n      selectInput(\n        inputId = \"species\",\n        label = \"Choose species\",\n        choices = c(\"All\", levels(penguins$species)),\n        selected = \"All\"\n      ),\n      \n      selectInput(\n        inputId = \"island\",\n        label = \"Choose island\",\n        choices = c(\"All\", levels(penguins$island)),\n        selected = \"All\"\n      ),\n      \n      checkboxInput(\n        inputId = \"show_smooth\",\n        label = \"Show trend line\",\n        value = TRUE\n      )\n    ),\n    \n    mainPanel(\n      \"Outputs will go here\"\n    )\n  )\n)\n\nAt this point, the app has controls, but they do not affect anything yet. Inputs only become useful when the server uses them.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#adding-outputs",
+    "href": "dashboards.html#adding-outputs",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.8 Adding outputs",
+    "text": "4.8 Adding outputs\nOutputs define what appears in the app.\nFor this example, we want three outputs.\nWe want a printed summary.\n\nverbatimTextOutput(\"summary_text\")\n\nWe want a plot.\n\nplotOutput(\"penguin_plot\", height = \"450px\")\n\nAnd we want an interactive table.\n\nDTOutput(\"penguin_table\")\n\nThe names inside these functions are output IDs. They must match objects created in the server.\nFor example, if the UI contains this output,\n\nplotOutput(\"penguin_plot\")\n\nthen the server must create this object.\n\noutput$penguin_plot &lt;- renderPlot({\n  # plot code goes here\n})\n\nThis is one of the most important rules in Shiny.\nThe UI places an output on the page. The server creates the content for that output. The names must match.\nNow we can add the outputs to the main panel.\n\nui &lt;- fluidPage(\n  titlePanel(\"Palmer Penguins Shiny Demo\"),\n  \n  sidebarLayout(\n    sidebarPanel(\n      selectInput(\n        inputId = \"species\",\n        label = \"Choose species\",\n        choices = c(\"All\", levels(penguins$species)),\n        selected = \"All\"\n      ),\n      \n      selectInput(\n        inputId = \"island\",\n        label = \"Choose island\",\n        choices = c(\"All\", levels(penguins$island)),\n        selected = \"All\"\n      ),\n      \n      checkboxInput(\n        inputId = \"show_smooth\",\n        label = \"Show trend line\",\n        value = TRUE\n      )\n    ),\n    \n    mainPanel(\n      h3(\"Summary\"),\n      verbatimTextOutput(\"summary_text\"),\n      \n      h3(\"Scatterplot\"),\n      plotOutput(\"penguin_plot\", height = \"450px\"),\n      \n      h3(\"Data\"),\n      DTOutput(\"penguin_table\")\n    )\n  )\n)\n\nThe user interface is now ready. It tells the app what the user sees, but it still does not tell R how to produce the outputs.\nThat happens in the server.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#building-the-server",
+    "href": "dashboards.html#building-the-server",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.9 Building the server",
+    "text": "4.9 Building the server\nThe server is where the app does the work.\nEvery server function has this structure.\n\nserver &lt;- function(input, output) {\n  \n}\n\nThe input object contains values selected by the user. The output object contains the results sent back to the interface.\nFor example, if the UI contains an input called \"species\", then the server can read the selected species with input$species.\nIf the UI contains an output called \"summary_text\", then the server can create it with output$summary_text.\nThe server code for a printed summary looks like this.\n\nserver &lt;- function(input, output) {\n  \n  output$summary_text &lt;- renderPrint({\n    data &lt;- penguins\n    \n    if (input$species != \"All\") {\n      data &lt;- data |&gt;\n        filter(species == input$species)\n    }\n    \n    if (input$island != \"All\") {\n      data &lt;- data |&gt;\n        filter(island == input$island)\n    }\n    \n    cat(\"Rows:\", nrow(data), \"\\n\")\n    cat(\"Species:\", paste(unique(data$species), collapse = \", \"), \"\\n\")\n    cat(\"Islands:\", paste(unique(data$island), collapse = \", \"), \"\\n\")\n    cat(\n      \"Average body mass:\",\n      round(mean(data$body_mass_g, na.rm = TRUE), 1),\n      \"g\\n\"\n    )\n  })\n}\n\nThis code creates an output called summary_text.\nThe UI displays that output with verbatimTextOutput(\"summary_text\").\nInside renderPrint(), we first copy the full penguins data into an object called data. Then we filter it depending on the user selections. If the selected species is not \"All\", we keep only the selected species. If the selected island is not \"All\", we keep only the selected island.\nFinally, we print a few summary lines using cat().\nThis is reactive because the code depends on input$species and input$island. When either input changes, Shiny reruns the code inside renderPrint() and updates the summary.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#adding-the-plot",
+    "href": "dashboards.html#adding-the-plot",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.10 Adding the plot",
+    "text": "4.10 Adding the plot\nThe plot works in the same way.\nThe UI contains this output.\n\nplotOutput(\"penguin_plot\", height = \"450px\")\n\nThe server creates it with renderPlot().\n\noutput$penguin_plot &lt;- renderPlot({\n  data &lt;- penguins\n  \n  if (input$species != \"All\") {\n    data &lt;- data |&gt;\n      filter(species == input$species)\n  }\n  \n  if (input$island != \"All\") {\n    data &lt;- data |&gt;\n      filter(island == input$island)\n  }\n  \n  data &lt;- data |&gt;\n    filter(\n      !is.na(flipper_length_mm),\n      !is.na(body_mass_g)\n    )\n  \n  p &lt;- ggplot(\n    data,\n    aes(\n      x = flipper_length_mm,\n      y = body_mass_g,\n      colour = species\n    )\n  ) +\n    geom_point(size = 3, alpha = 0.8) +\n    labs(\n      x = \"Flipper length, mm\",\n      y = \"Body mass, g\",\n      colour = \"Species\",\n      title = \"Body mass and flipper length\"\n    ) +\n    theme_minimal(base_size = 14)\n  \n  if (input$show_smooth) {\n    p &lt;- p + geom_smooth(method = \"lm\", se = FALSE)\n  }\n  \n  p\n})\n\nThe first part of the code filters the data. The second part creates the plot. The final if statement checks whether the user selected the trend line option. If input$show_smooth is TRUE, the app adds a linear trend line.\nThis is a basic example of conditional display. The plot changes depending on what the user asks to see.\nIn a research dashboard, the same logic might control whether to display confidence intervals, labels, countries in a region, model specifications, or alternative indicators.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#adding-the-table",
+    "href": "dashboards.html#adding-the-table",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.11 Adding the table",
+    "text": "4.11 Adding the table\nThe table output is created with DT.\nThe UI contains this output.\n\nDTOutput(\"penguin_table\")\n\nThe server creates it with renderDT().\n\noutput$penguin_table &lt;- renderDT({\n  data &lt;- penguins\n  \n  if (input$species != \"All\") {\n    data &lt;- data |&gt;\n      filter(species == input$species)\n  }\n  \n  if (input$island != \"All\") {\n    data &lt;- data |&gt;\n      filter(island == input$island)\n  }\n  \n  datatable(\n    data,\n    options = list(pageLength = 8),\n    rownames = FALSE\n  )\n})\n\nThis gives the user an interactive table with search and pagination. For research dashboards, tables are often just as important as plots. They let users inspect the actual observations behind a visualization.\nThis is especially useful when the dashboard presents case classifications, coding decisions, country indicators, or project metadata.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#avoiding-repeated-filtering",
+    "href": "dashboards.html#avoiding-repeated-filtering",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.12 Avoiding repeated filtering",
+    "text": "4.12 Avoiding repeated filtering\nThe current app repeats the same filtering code three times. The summary, plot, and table all begin by creating a filtered version of the data.\nThis works, but it is not ideal.\nA cleaner approach is to create one reactive object that stores the filtered data. Then each output can reuse that same object.\nIn Shiny, this is done with reactive().\n\nfiltered_penguins &lt;- reactive({\n  data &lt;- penguins\n  \n  if (input$species != \"All\") {\n    data &lt;- data |&gt;\n      filter(species == input$species)\n  }\n  \n  if (input$island != \"All\") {\n    data &lt;- data |&gt;\n      filter(island == input$island)\n  }\n  \n  data\n})\n\nA reactive object is like a small function. To use it, we call it with parentheses.\n\ndata &lt;- filtered_penguins()\n\nThis lets us simplify the server.\n\nserver &lt;- function(input, output) {\n  \n  filtered_penguins &lt;- reactive({\n    data &lt;- penguins\n    \n    if (input$species != \"All\") {\n      data &lt;- data |&gt;\n        filter(species == input$species)\n    }\n    \n    if (input$island != \"All\") {\n      data &lt;- data |&gt;\n        filter(island == input$island)\n    }\n    \n    data\n  })\n  \n  output$summary_text &lt;- renderPrint({\n    data &lt;- filtered_penguins()\n    \n    cat(\"Rows:\", nrow(data), \"\\n\")\n    cat(\"Species:\", paste(unique(data$species), collapse = \", \"), \"\\n\")\n    cat(\"Islands:\", paste(unique(data$island), collapse = \", \"), \"\\n\")\n    cat(\n      \"Average body mass:\",\n      round(mean(data$body_mass_g, na.rm = TRUE), 1),\n      \"g\\n\"\n    )\n  })\n  \n  output$penguin_plot &lt;- renderPlot({\n    data &lt;- filtered_penguins() |&gt;\n      filter(\n        !is.na(flipper_length_mm),\n        !is.na(body_mass_g)\n      )\n    \n    p &lt;- ggplot(\n      data,\n      aes(\n        x = flipper_length_mm,\n        y = body_mass_g,\n        colour = species\n      )\n    ) +\n      geom_point(size = 3, alpha = 0.8) +\n      labs(\n        x = \"Flipper length, mm\",\n        y = \"Body mass, g\",\n        colour = \"Species\",\n        title = \"Body mass and flipper length\"\n      ) +\n      theme_minimal(base_size = 14)\n    \n    if (input$show_smooth) {\n      p &lt;- p + geom_smooth(method = \"lm\", se = FALSE)\n    }\n    \n    p\n  })\n  \n  output$penguin_table &lt;- renderDT({\n    datatable(\n      filtered_penguins(),\n      options = list(pageLength = 8),\n      rownames = FALSE\n    )\n  })\n}\n\nThis is closer to how a real dashboard should be written. If we later change the filtering logic, we only need to change it once.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#the-complete-app",
+    "href": "dashboards.html#the-complete-app",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.13 The complete app",
+    "text": "4.13 The complete app\nHere is the complete version of the app.\nSave this file as app.R.\n\n# File Name: app.R\n# Simple Palmer Penguins Shiny App\n\n# Set up ----------------------------------------------------------------------\n\nlibrary(shiny)\nlibrary(palmerpenguins)\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(DT)\n\n# Data ------------------------------------------------------------------------\n\npenguins &lt;- palmerpenguins::penguins |&gt;\n  mutate(\n    species = as.factor(species),\n    island = as.factor(island)\n  )\n\n# User interface --------------------------------------------------------------\n\nui &lt;- fluidPage(\n  titlePanel(\"Palmer Penguins Shiny Demo\"),\n  \n  sidebarLayout(\n    sidebarPanel(\n      selectInput(\n        inputId = \"species\",\n        label = \"Choose species\",\n        choices = c(\"All\", levels(penguins$species)),\n        selected = \"All\"\n      ),\n      \n      selectInput(\n        inputId = \"island\",\n        label = \"Choose island\",\n        choices = c(\"All\", levels(penguins$island)),\n        selected = \"All\"\n      ),\n      \n      checkboxInput(\n        inputId = \"show_smooth\",\n        label = \"Show trend line\",\n        value = TRUE\n      )\n    ),\n    \n    mainPanel(\n      h3(\"Summary\"),\n      verbatimTextOutput(\"summary_text\"),\n      \n      h3(\"Scatterplot\"),\n      plotOutput(\"penguin_plot\", height = \"450px\"),\n      \n      h3(\"Data\"),\n      DTOutput(\"penguin_table\")\n    )\n  )\n)\n\n# Server ----------------------------------------------------------------------\n\nserver &lt;- function(input, output) {\n  \n  filtered_penguins &lt;- reactive({\n    data &lt;- penguins\n    \n    if (input$species != \"All\") {\n      data &lt;- data |&gt;\n        filter(species == input$species)\n    }\n    \n    if (input$island != \"All\") {\n      data &lt;- data |&gt;\n        filter(island == input$island)\n    }\n    \n    data\n  })\n  \n  output$summary_text &lt;- renderPrint({\n    data &lt;- filtered_penguins()\n    \n    cat(\"Rows:\", nrow(data), \"\\n\")\n    cat(\"Species:\", paste(unique(data$species), collapse = \", \"), \"\\n\")\n    cat(\"Islands:\", paste(unique(data$island), collapse = \", \"), \"\\n\")\n    cat(\n      \"Average body mass:\",\n      round(mean(data$body_mass_g, na.rm = TRUE), 1),\n      \"g\\n\"\n    )\n  })\n  \n  output$penguin_plot &lt;- renderPlot({\n    data &lt;- filtered_penguins() |&gt;\n      filter(\n        !is.na(flipper_length_mm),\n        !is.na(body_mass_g)\n      )\n    \n    p &lt;- ggplot(\n      data,\n      aes(\n        x = flipper_length_mm,\n        y = body_mass_g,\n        colour = species\n      )\n    ) +\n      geom_point(size = 3, alpha = 0.8) +\n      labs(\n        x = \"Flipper length, mm\",\n        y = \"Body mass, g\",\n        colour = \"Species\",\n        title = \"Body mass and flipper length\"\n      ) +\n      theme_minimal(base_size = 14)\n    \n    if (input$show_smooth) {\n      p &lt;- p + geom_smooth(method = \"lm\", se = FALSE)\n    }\n    \n    p\n  })\n  \n  output$penguin_table &lt;- renderDT({\n    datatable(\n      filtered_penguins(),\n      options = list(pageLength = 8),\n      rownames = FALSE\n    )\n  })\n}\n\n# Run app ---------------------------------------------------------------------\n\nshinyApp(ui = ui, server = server)\n\nTo run the app, open app.R in RStudio and click Run App.\nYou can also run the file from the console.\n\nshiny::runApp()\n\nThe app should open in a browser window or in the RStudio viewer.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#publishing-the-app",
+    "href": "dashboards.html#publishing-the-app",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.14 Publishing the app",
+    "text": "4.14 Publishing the app\nA Shiny app runs through R. This means that it cannot be published in exactly the same way as a static HTML page. The server hosting the app needs to be able to run R.\nThe easiest route for small teaching apps is shinyapps.io.\nIn RStudio, the deployment process is usually done through the publish button. After creating an account and connecting it to RStudio, you can publish the app directly from the app window.\n\nFor larger projects, other deployment options may be more appropriate. These include Posit Connect, a university server, a virtual machine, Docker, or a cloud service such as Google Cloud Run.\nThe important point is that a Shiny app is not just a file. It is an application that needs an R environment.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#from-teaching-example-to-research-dashboard",
+    "href": "dashboards.html#from-teaching-example-to-research-dashboard",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.15 From teaching example to research dashboard",
+    "text": "4.15 From teaching example to research dashboard\nThe penguins example is deliberately simple, but the structure maps directly onto research dashboards.\nThe species filter could become a country filter.\nThe island filter could become a region, institution, policy area, or year filter.\nThe scatterplot could become a trend plot, indicator comparison, model output, map, or timeline.\nThe table could become a searchable database of cases, documents, interviews, coding decisions, or country profiles.\nThe summary text could become a short country note, a methodological explanation, or a dynamic description of the selected data.\nThe important design question is not whether we can make everything interactive. We usually can. The better question is which forms of interactivity help the reader understand the research more clearly.\nA useful research dashboard should not be a dumping ground for every object produced during a project. It should give the user controlled access to selected parts of the evidence base.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#a-simple-research-dashboard-structure",
+    "href": "dashboards.html#a-simple-research-dashboard-structure",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.16 A simple research dashboard structure",
+    "text": "4.16 A simple research dashboard structure\nA practical research dashboard often has four sections.\nThe first section is an overview. It tells the user what the dashboard contains, what the unit of analysis is, and what the user can do with it.\nThe second section is an exploration page. This is where users filter data, compare cases, and inspect plots.\nThe third section is a data page. This gives users access to the underlying table, usually with search and download options.\nThe fourth section is a methods or documentation page. This explains where the data come from, how variables were coded, and what limitations the user should keep in mind.\nIn Shiny, this can be organized with tabs.\n\nui &lt;- fluidPage(\n  titlePanel(\"Research Dashboard\"),\n  \n  tabsetPanel(\n    tabPanel(\n      \"Overview\",\n      h3(\"About this dashboard\"),\n      p(\"Short project description goes here.\")\n    ),\n    \n    tabPanel(\n      \"Explore\",\n      sidebarLayout(\n        sidebarPanel(\n          selectInput(\n            inputId = \"country\",\n            label = \"Choose country\",\n            choices = c(\"All\", \"Country A\", \"Country B\")\n          )\n        ),\n        mainPanel(\n          plotOutput(\"main_plot\")\n        )\n      )\n    ),\n    \n    tabPanel(\n      \"Data\",\n      DTOutput(\"data_table\")\n    ),\n    \n    tabPanel(\n      \"Methods\",\n      h3(\"Data and coding\"),\n      p(\"Documentation goes here.\")\n    )\n  )\n)\n\nThis structure is often enough for a first version of a research dashboard.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#common-mistakes",
+    "href": "dashboards.html#common-mistakes",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.17 Common mistakes",
+    "text": "4.17 Common mistakes\nThe most common mistake is building the interface before deciding what the dashboard is for. A dashboard should begin with a small number of user questions. For example, the user may want to compare countries, inspect a time trend, check the coding of a case, or download a filtered table. The app should be designed around those tasks.\nA second mistake is making everything reactive. Interactivity is useful only when it changes something meaningful. Too many controls make the app harder to read.\nA third mistake is hiding the data. Research dashboards should usually include a table or documentation page. This helps users understand what they are seeing and reduces the risk that the dashboard becomes a decorative object.\nA fourth mistake is forgetting that the app needs to be maintained. If the data are updated manually, the dashboard should make that clear. If the app depends on external files, APIs, or packages, those dependencies should be documented.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "dashboards.html#conclusion",
+    "href": "dashboards.html#conclusion",
+    "title": "4  Dashboards with Shiny",
+    "section": "4.18 Conclusion",
+    "text": "4.18 Conclusion\nThe basic structure of a Shiny dashboard is simple. The UI defines what the user sees. The server defines what R calculates. Inputs collect information from the user. Render functions create outputs. Reactive objects help the app update when inputs change.\nOnce this structure is clear, larger dashboards become less mysterious. They may have more files, more data, more tabs, and better design, but they still follow the same logic.\nFor research communication, the value of a dashboard is not that it looks impressive. The value is that it lets users inspect a project in a controlled and transparent way. A good dashboard makes it easier to see what the data contain, how cases compare, and what choices sit behind the final outputs.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Dashboards with `Shiny`</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Chang, Winston. 2018. R Graphics Cookbook: Practical Recipes for\nVisualizing Data. Second. Sebastopol, California: O’Reilly Media.\nhttps://r-graphics.org/.\n\n\nGillespie, Colin, and Robin Lovelace. 2016. Efficient r Programming:\nA Practical Guide to Smarter Programming. Sebastopol, California:\nO’Reilly Media. https://csgillespie.github.io/efficientR/.\n\n\nGrolemund, Garrett. 2014. Hands-on Programming with r: Write Your\nOwn Functions and Simulations. Sebastopol, California: O’Reilly\nMedia. https://rstudio-education.github.io/hopr/.\n\n\nGrolemund, Garrett, and Hadley Wickham. 2016. R for Data\nScience. Sebastopol, California: O’Reilly Media. https://r4ds.had.co.nz/.\n\n\nLong, JD, and Paul Teetor. 2019. R Cookbook: Proven Recipes for Data\nAnalysis, Statistics, and Graphics. Second. Sebastopol, California:\nO’Reilly Media. https://rc2e.com/.\n\n\nMcmanus, Ian, and Paul Gesiak. 2014. “Experimenting with Mondrian:\nComparing the Method of Production with the Method of Choice.”\nIn. https://doi.org/10.13140/2.1.1561.2967.\n\n\nSilge, Julia, and David Robinson. 2017. Text Mining with r: A Tidy\nApproach. Sebastopol, California: O’Reilly Media. https://www.tidytextmining.com/.\n\n\nVenables, W. N., D. M. Smith, and the R Core Team. 2021. An\nIntroduction to r. https://cran.r-project.org/doc/manuals/R-intro.pdf.\n\n\nWilke, Claus O. 2019. Fundamentals of Data Visualization: A Primer\non Making Informative and Compelling Figures. Sebastopol,\nCalifornia: O’Reilly Media. https://clauswilke.com/dataviz/.\n\n\nWilkinson, Leland. 2005. The Grammar of Graphics. 2nd ed. New\nYork: Springer-Verlag. https://www.springer.com/gp/book/9780387245447.\n\n\nXie, Yihui, J. J. Allaire, and Garrett Grolemund. 2018. R Markdown:\nThe Definitive Guide. Boca Raton, Florida: Chapman; Hall/CRC. https://bookdown.org/yihui/rmarkdown.\n\n\nXie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. R\nMarkdown Cookbook. Boca Raton, Florida: Chapman; Hall/CRC. https://bookdown.org/yihui/rmarkdown-cookbook.\n\n\nZinovyev, iAndrei. 2010. “Data Visualization in Political and\nSocial Sciences.” In. https://arxiv.org/abs/1008.1188.",
+    "crumbs": [
+      "References"
     ]
   }
 ]

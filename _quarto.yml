@@ -19,6 +19,7 @@ book:
     - intro.qmd
     - ggbasics.qmd
     - webscraping.qmd
+    - dashboards.qmd
     # - maps/index.qmd
     - references.qmd
 
@@ -28,8 +29,6 @@ format:
   html:
     theme: cosmo
     css: styles.css
-  pdf:
-    documentclass: scrreprt
 
 execute:
   warning: false
