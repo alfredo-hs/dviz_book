@@ -1,5 +1,4 @@
 [build]
-  command = "quarto render"
   publish = "_book"
 
 [[plugins]]
