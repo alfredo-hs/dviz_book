@@ -1,12 +1,12 @@
-# Dashboards with `Shiny`  {#dashboards}
+# Dashboards with `Shiny` {#dashboards}
 
-A dashboard is useful when a research project produces material that is easier to explore than to summarize in a single figure or table. Many research projects generate indicators, case classifications, qualitative metadata, country profiles, interview summaries, maps, or model outputs. Some of these can be placed in a paper. Some can be placed in an appendix. But when the reader needs to filter, compare, inspect, and move between levels of detail, a static document becomes limited.
+A dashboard is useful when a research project produces material that is easier to explore than to summarize in a single figure or table. Many research projects generate indicators, case classifications, qualitative metadata, country profiles, interview summaries, maps, model outputs, or coded documents. Some of these can be placed in a paper. Some can be placed in an appendix. But when the reader needs to filter, compare, inspect, and move between levels of detail, a static document becomes limited.
 
-`Shiny` lets us build interactive web applications directly from R. This means that we can use the same language we already use for cleaning data, estimating models, and producing plots to create a small web interface around our research data.
+`Shiny` lets us build interactive web applications directly from R. We can use the same language we already use for cleaning data, estimating models, and producing plots to create a small web interface around research data.
 
 This chapter introduces the basic logic of `Shiny` by building a small dashboard with the `palmerpenguins` data set. The example is simple, but the structure is the same one used in larger research dashboards. The user selects filters in the interface. The server uses those filters to subset the data. The app then updates a summary, a plot, and a table.
 
-The point is not to build a perfect dashboard. The point is to understand the minimum structure of a working app.
+The goal is not to build a perfect dashboard. The goal is to understand the minimum structure of a working app and to see how that structure can support research communication.
 
 ## What is a dashboard?
 
@@ -14,11 +14,11 @@ A dashboard is an interface for exploring data.
 
 A static plot answers a question chosen by the researcher. A dashboard lets the user ask a small number of related questions by changing inputs. For example, a dashboard can let users select a country, choose a time period, compare regions, inspect a table, or move between different indicators.
 
-For research communication, this matters because the audience often wants to see more than the final argument. They may want to know which cases are included, how indicators change across time, whether a finding is driven by a subset of observations, or how a specific country compares with others.
+For research communication, the audience often wants to see more than the final argument. They may want to know which cases are included, how indicators change across time, whether a finding is driven by a subset of observations, or how a specific country compares with others.
 
 Dashboards are especially useful when a project has several layers of information. A paper can explain the argument. A dashboard can make part of the evidence base easier to inspect.
 
-This is also the logic behind the FIRSA dashboard. The dashboard is not a replacement for the research project. It is a way of making selected parts of the project visible, navigable, and reusable.
+This is also the logic behind research dashboards such as FIRSA. A dashboard is not a replacement for the research project. It is a way of making selected parts of the project visible, navigable, and reusable.
 
 ## What is R Shiny?
 
@@ -28,9 +28,9 @@ The user sees a web page. Behind that page, R is running code. When the user cha
 
 A basic `Shiny` app has three parts.
 
-First, the **user interface**, usually called the `ui`, defines what the user sees. This includes the title, text, inputs, plots, tables, and layout.
+First, the user interface, usually called the `ui`, defines what the user sees. This includes the title, text, inputs, plots, tables, and layout.
 
-Second, the **server** defines what R does. This is where we filter data, create plots, calculate summaries, and prepare tables.
+Second, the server defines what R does. This is where we filter data, create plots, calculate summaries, and prepare tables.
 
 Third, `shinyApp()` combines the `ui` and the `server` into a working app.
 
@@ -48,6 +48,49 @@ shinyApp(ui = ui, server = server)
 ```
 
 This is the smallest possible template for a `Shiny` app. It does not show anything useful yet, but it already contains the structure we need.
+
+## How Shiny reacts
+
+The easiest way to understand `Shiny` is to think of it as a small loop between the browser and R.
+
+The user changes something in the interface. `Shiny` stores that choice inside the `input` object. The server reads the relevant value from `input`, reruns the code that depends on it, and sends the updated result back to the matching output in the interface.
+
+A simple workflow looks like this.
+
+```{r}
+#| echo: true
+#| eval: false
+
+# user selects a species in the UI
+input$species
+
+# server uses that value
+filtered_penguins()
+
+# server creates outputs
+output$summary_text
+output$penguin_plot
+output$penguin_table
+```
+
+Names are very important in `Shiny`. An input created in the UI with `inputId = "species"` is read in the server as `input$species`. An output placed in the UI with `plotOutput("penguin_plot")` is created in the server as `output$penguin_plot`.
+
+The app works when the names in the interface and the names in the server match. Many beginner errors in `Shiny` come from small mismatches between these names.
+
+A useful way to remember the structure is to move from input, to reactive code, to output.
+
+```{r}
+#| echo: true
+#| eval: false
+
+input$something
+
+reactive_code()
+
+output$something
+```
+
+In the penguins app, the species and island inputs feed into a filtered data set. That filtered data set is then reused by the summary, the plot, and the table.
 
 ## Installing the packages
 
@@ -91,20 +134,48 @@ The file should usually have this structure.
 #| echo: true
 #| eval: false
 
-# packages
+# Packages
 
-# data
+# Data
 
-# user interface
+# User interface
 
-# server
+# Server
 
-# run app
+# Run app
 ```
 
 This may look too simple, but it is a useful habit. As an app grows, it becomes easier to lose track of where things are happening. Keeping the file organized helps you debug the app later.
 
 For the rest of the chapter, we will build the app one section at a time.
+
+Posit has a short article on [app formats and launching apps](https://shiny.posit.co/r/articles/build/app-formats/) that explains the difference between a single `app.R` file and the older two file structure with `ui.R` and `server.R`.
+
+## App folders and file organization
+
+A single `app.R` file is enough for the example in this chapter. It keeps the full structure visible.
+
+Research dashboards often need more organization. They may include cleaned data, helper functions, images, CSS files, downloadable outputs, or documentation. A project folder might look like this.
+
+```text
+my_app/
+├── app.R
+├── data/
+│   └── penguins.csv
+├── R/
+│   └── helpers.R
+├── figures/
+│   └── scatterplot.png
+├── www/
+│   ├── styles.css
+│   └── logo.png
+└── outputs/
+    └── filtered_data.csv
+```
+
+The `data` folder can store input data. The `R` folder can store helper functions. The `www` folder is used for files that the web app needs to serve directly, such as images, icons, or CSS. The `outputs` folder can store files created by the app or files that users can download.
+
+A useful habit is to start with one file, then move repeated code into helper functions once the app becomes difficult to read. The aim is not to create a complicated structure from the beginning. The aim is to keep the app understandable as it grows.
 
 ## Preparing the data
 
@@ -159,12 +230,12 @@ A more useful layout separates the page into a sidebar and a main panel. The sid
 
 ui <- fluidPage(
   titlePanel("Palmer Penguins Shiny Demo"),
-  
+
   sidebarLayout(
     sidebarPanel(
       "Inputs will go here"
     ),
-    
+
     mainPanel(
       "Outputs will go here"
     )
@@ -174,9 +245,9 @@ ui <- fluidPage(
 
 This layout is common because it matches the basic logic of a dashboard. The user changes something on the left. The result appears on the right.
 
-In the slides for the FIRSA webinar, this structure was shown as a simple panel layout.
+<!-- Placeholder image. Add figures/shinylayout.png to the figures folder if it is missing. -->
 
-![](figures/shinylayout.png)
+![Basic Shiny layout with a title, sidebar, main panel, and optional tabs.](figures/shinylayout.png)
 
 The same structure can be represented with code.
 
@@ -186,15 +257,15 @@ The same structure can be represented with code.
 
 ui <- fluidPage(
   titlePanel("Title Panel"),
-  
+
   sidebarLayout(
     sidebarPanel(
       "Side Panel"
     ),
-    
+
     mainPanel(
       "Main Panel",
-      
+
       tabsetPanel(
         tabPanel("Tab Panel A"),
         tabPanel("Tab Panel B")
@@ -206,7 +277,9 @@ ui <- fluidPage(
 
 In this chapter we will use a simple sidebar layout without tabs. For a larger research dashboard, tabs are useful when the app contains different sections, such as an overview page, a country profile page, a methods page, and a data table.
 
-![](figures/example_layout.png)
+<!-- Placeholder image. Add figures/example_layout.png to the figures folder if it is missing. -->
+
+![Example dashboard layout with tabs and a main content area.](figures/example_layout.png)
 
 ## Adding inputs
 
@@ -214,7 +287,7 @@ Inputs collect information from the user.
 
 In this app, we want users to choose a species, choose an island, and decide whether to show a trend line in the plot.
 
-The first input is a drop-down menu created with `selectInput()`.
+The first input is a menu created with `selectInput()`.
 
 ```{r}
 #| echo: true
@@ -273,7 +346,7 @@ Now we can place all three inputs inside the sidebar.
 
 ui <- fluidPage(
   titlePanel("Palmer Penguins Shiny Demo"),
-  
+
   sidebarLayout(
     sidebarPanel(
       selectInput(
@@ -282,21 +355,21 @@ ui <- fluidPage(
         choices = c("All", levels(penguins$species)),
         selected = "All"
       ),
-      
+
       selectInput(
         inputId = "island",
         label = "Choose island",
         choices = c("All", levels(penguins$island)),
         selected = "All"
       ),
-      
+
       checkboxInput(
         inputId = "show_smooth",
         label = "Show trend line",
         value = TRUE
       )
     ),
-    
+
     mainPanel(
       "Outputs will go here"
     )
@@ -373,7 +446,7 @@ Now we can add the outputs to the main panel.
 
 ui <- fluidPage(
   titlePanel("Palmer Penguins Shiny Demo"),
-  
+
   sidebarLayout(
     sidebarPanel(
       selectInput(
@@ -382,28 +455,28 @@ ui <- fluidPage(
         choices = c("All", levels(penguins$species)),
         selected = "All"
       ),
-      
+
       selectInput(
         inputId = "island",
         label = "Choose island",
         choices = c("All", levels(penguins$island)),
         selected = "All"
       ),
-      
+
       checkboxInput(
         inputId = "show_smooth",
         label = "Show trend line",
         value = TRUE
       )
     ),
-    
+
     mainPanel(
       h3("Summary"),
       verbatimTextOutput("summary_text"),
-      
+
       h3("Scatterplot"),
       plotOutput("penguin_plot", height = "450px"),
-      
+
       h3("Data"),
       DTOutput("penguin_table")
     )
@@ -426,7 +499,7 @@ Every server function has this structure.
 #| eval: false
 
 server <- function(input, output) {
-  
+
 }
 ```
 
@@ -443,20 +516,20 @@ The server code for a printed summary looks like this.
 #| eval: false
 
 server <- function(input, output) {
-  
+
   output$summary_text <- renderPrint({
     data <- penguins
-    
+
     if (input$species != "All") {
       data <- data |>
         filter(species == input$species)
     }
-    
+
     if (input$island != "All") {
       data <- data |>
         filter(island == input$island)
     }
-    
+
     cat("Rows:", nrow(data), "\n")
     cat("Species:", paste(unique(data$species), collapse = ", "), "\n")
     cat("Islands:", paste(unique(data$island), collapse = ", "), "\n")
@@ -500,23 +573,23 @@ The server creates it with `renderPlot()`.
 
 output$penguin_plot <- renderPlot({
   data <- penguins
-  
+
   if (input$species != "All") {
     data <- data |>
       filter(species == input$species)
   }
-  
+
   if (input$island != "All") {
     data <- data |>
       filter(island == input$island)
   }
-  
+
   data <- data |>
     filter(
       !is.na(flipper_length_mm),
       !is.na(body_mass_g)
     )
-  
+
   p <- ggplot(
     data,
     aes(
@@ -533,11 +606,11 @@ output$penguin_plot <- renderPlot({
       title = "Body mass and flipper length"
     ) +
     theme_minimal(base_size = 14)
-  
+
   if (input$show_smooth) {
     p <- p + geom_smooth(method = "lm", se = FALSE)
   }
-  
+
   p
 })
 ```
@@ -569,17 +642,17 @@ The server creates it with `renderDT()`.
 
 output$penguin_table <- renderDT({
   data <- penguins
-  
+
   if (input$species != "All") {
     data <- data |>
       filter(species == input$species)
   }
-  
+
   if (input$island != "All") {
     data <- data |>
       filter(island == input$island)
   }
-  
+
   datatable(
     data,
     options = list(pageLength = 8),
@@ -608,17 +681,17 @@ In Shiny, this is done with `reactive()`.
 
 filtered_penguins <- reactive({
   data <- penguins
-  
+
   if (input$species != "All") {
     data <- data |>
       filter(species == input$species)
   }
-  
+
   if (input$island != "All") {
     data <- data |>
       filter(island == input$island)
   }
-  
+
   data
 })
 ```
@@ -639,26 +712,26 @@ This lets us simplify the server.
 #| eval: false
 
 server <- function(input, output) {
-  
+
   filtered_penguins <- reactive({
     data <- penguins
-    
+
     if (input$species != "All") {
       data <- data |>
         filter(species == input$species)
     }
-    
+
     if (input$island != "All") {
       data <- data |>
         filter(island == input$island)
     }
-    
+
     data
   })
-  
+
   output$summary_text <- renderPrint({
     data <- filtered_penguins()
-    
+
     cat("Rows:", nrow(data), "\n")
     cat("Species:", paste(unique(data$species), collapse = ", "), "\n")
     cat("Islands:", paste(unique(data$island), collapse = ", "), "\n")
@@ -668,14 +741,14 @@ server <- function(input, output) {
       "g\n"
     )
   })
-  
+
   output$penguin_plot <- renderPlot({
     data <- filtered_penguins() |>
       filter(
         !is.na(flipper_length_mm),
         !is.na(body_mass_g)
       )
-    
+
     p <- ggplot(
       data,
       aes(
@@ -692,14 +765,14 @@ server <- function(input, output) {
         title = "Body mass and flipper length"
       ) +
       theme_minimal(base_size = 14)
-    
+
     if (input$show_smooth) {
       p <- p + geom_smooth(method = "lm", se = FALSE)
     }
-    
+
     p
   })
-  
+
   output$penguin_table <- renderDT({
     datatable(
       filtered_penguins(),
@@ -712,9 +785,11 @@ server <- function(input, output) {
 
 This is closer to how a real dashboard should be written. If we later change the filtering logic, we only need to change it once.
 
-## The complete app
+Posit's [lesson on reactive expressions](https://shiny.posit.co/r/getstarted/shiny-basics/lesson6/) gives a useful explanation of how reactive objects help control which parts of an app update.
 
-Here is the complete version of the app.
+## The complete basic app
+
+Here is the complete version of the basic app.
 
 Save this file as `app.R`.
 
@@ -722,10 +797,10 @@ Save this file as `app.R`.
 #| echo: true
 #| eval: false
 
-# File Name: app.R
-# Simple Palmer Penguins Shiny App
+# File name
+# app.R
 
-# Set up ----------------------------------------------------------------------
+# Packages
 
 library(shiny)
 library(palmerpenguins)
@@ -733,7 +808,7 @@ library(dplyr)
 library(ggplot2)
 library(DT)
 
-# Data ------------------------------------------------------------------------
+# Data
 
 penguins <- palmerpenguins::penguins |>
   mutate(
@@ -741,11 +816,11 @@ penguins <- palmerpenguins::penguins |>
     island = as.factor(island)
   )
 
-# User interface --------------------------------------------------------------
+# User interface
 
 ui <- fluidPage(
   titlePanel("Palmer Penguins Shiny Demo"),
-  
+
   sidebarLayout(
     sidebarPanel(
       selectInput(
@@ -754,57 +829,57 @@ ui <- fluidPage(
         choices = c("All", levels(penguins$species)),
         selected = "All"
       ),
-      
+
       selectInput(
         inputId = "island",
         label = "Choose island",
         choices = c("All", levels(penguins$island)),
         selected = "All"
       ),
-      
+
       checkboxInput(
         inputId = "show_smooth",
         label = "Show trend line",
         value = TRUE
       )
     ),
-    
+
     mainPanel(
       h3("Summary"),
       verbatimTextOutput("summary_text"),
-      
+
       h3("Scatterplot"),
       plotOutput("penguin_plot", height = "450px"),
-      
+
       h3("Data"),
       DTOutput("penguin_table")
     )
   )
 )
 
-# Server ----------------------------------------------------------------------
+# Server
 
 server <- function(input, output) {
-  
+
   filtered_penguins <- reactive({
     data <- penguins
-    
+
     if (input$species != "All") {
       data <- data |>
         filter(species == input$species)
     }
-    
+
     if (input$island != "All") {
       data <- data |>
         filter(island == input$island)
     }
-    
+
     data
   })
-  
+
   output$summary_text <- renderPrint({
     data <- filtered_penguins()
-    
+
     cat("Rows:", nrow(data), "\n")
     cat("Species:", paste(unique(data$species), collapse = ", "), "\n")
     cat("Islands:", paste(unique(data$island), collapse = ", "), "\n")
@@ -814,14 +889,14 @@ server <- function(input, output) {
       "g\n"
     )
   })
-  
+
   output$penguin_plot <- renderPlot({
     data <- filtered_penguins() |>
       filter(
         !is.na(flipper_length_mm),
         !is.na(body_mass_g)
       )
-    
+
     p <- ggplot(
       data,
       aes(
@@ -838,14 +913,14 @@ server <- function(input, output) {
         title = "Body mass and flipper length"
       ) +
       theme_minimal(base_size = 14)
-    
+
     if (input$show_smooth) {
       p <- p + geom_smooth(method = "lm", se = FALSE)
     }
-    
+
     p
   })
-  
+
   output$penguin_table <- renderDT({
     datatable(
       filtered_penguins(),
@@ -855,14 +930,14 @@ server <- function(input, output) {
   })
 }
 
-# Run app ---------------------------------------------------------------------
+# Run app
 
 shinyApp(ui = ui, server = server)
 ```
 
 To run the app, open `app.R` in RStudio and click **Run App**.
 
-You can also run the file from the console.
+You can also run the app from the console.
 
 ```{r}
 #| echo: true
@@ -881,18 +956,283 @@ The app should open in a browser window or in the RStudio viewer.
   allowfullscreen>
 </iframe>
 
+## A more developed version of the same app
+
+The basic app is enough to understand the core structure of `Shiny`. It has inputs, outputs, a server, and a reactive object. It also shows how a simple research dashboard can connect filters, plots, summaries, and tables.
+
+A more developed version of the same app can add design and control without changing the underlying logic too much.
+
+The advanced version below uses a more dashboard oriented layout. It adds summary value boxes, a wider set of filters, an update button, validation for empty selections, and a download button. It also separates instant input changes from app updates. The user can change several inputs first, then click the button once.
+
+That pattern is useful for research dashboards that run slow models, query larger files, or pull data from external sources. In those cases, recalculating after every small input change can make the app feel unstable.
+
+<iframe
+  src="https://penguins.alfredohs.com"
+  width="100%"
+  height="720"
+  style="border: 1px solid #ddd; border-radius: 8px;"
+  allowfullscreen>
+</iframe>
+
+The main conceptual difference is the use of `eventReactive()`. The basic app uses `reactive()`, so the filtered data update whenever an input changes. The advanced app uses an update button, so the filtered data update only when the user asks for the dashboard to refresh.
+
+The advanced version also uses `validate()` and `need()` to give readable messages when a selection does not return data. In research dashboards, empty results are not always errors. A country may have no observations for a year. A policy may not exist in a selected region. A document may not contain a coded category. The app should handle those cases clearly.
+
+The code below is longer than the basic app, but the architecture is the same. There is still a user interface. There is still a server. There is still a filtered data object. The extra code mostly improves layout, user control, and reliability.
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Show the complete advanced app code"
+
+# File name
+# app.R
+
+# Packages
+
+library(shiny)
+library(bslib)
+library(palmerpenguins)
+library(dplyr)
+library(ggplot2)
+library(DT)
+
+# Data
+
+penguins <- palmerpenguins::penguins |>
+  mutate(
+    species = as.factor(species),
+    island = as.factor(island)
+  )
+
+mass_min <- floor(min(penguins$body_mass_g, na.rm = TRUE))
+mass_max <- ceiling(max(penguins$body_mass_g, na.rm = TRUE))
+
+# User interface
+
+ui <- page_sidebar(
+  title = "Palmer Penguins Research Dashboard",
+
+  sidebar = sidebar(
+    selectInput(
+      inputId = "species",
+      label = "Choose species",
+      choices = c("All", levels(penguins$species)),
+      selected = "All"
+    ),
+
+    checkboxGroupInput(
+      inputId = "islands",
+      label = "Choose islands",
+      choices = levels(penguins$island),
+      selected = levels(penguins$island)
+    ),
+
+    sliderInput(
+      inputId = "body_mass_range",
+      label = "Body mass range, grams",
+      min = mass_min,
+      max = mass_max,
+      value = c(mass_min, mass_max),
+      step = 100
+    ),
+
+    checkboxInput(
+      inputId = "show_smooth",
+      label = "Show trend line",
+      value = TRUE
+    ),
+
+    actionButton(
+      inputId = "update",
+      label = "Update dashboard"
+    ),
+
+    downloadButton(
+      outputId = "download_data",
+      label = "Download filtered data"
+    ),
+
+    helpText(
+      "Change the filters, then update the dashboard."
+    )
+  ),
+
+  layout_columns(
+    value_box(
+      title = "Rows",
+      value = textOutput("n_rows", inline = TRUE)
+    ),
+
+    value_box(
+      title = "Average body mass",
+      value = textOutput("mean_mass", inline = TRUE)
+    ),
+
+    value_box(
+      title = "Species shown",
+      value = textOutput("species_count", inline = TRUE)
+    )
+  ),
+
+  card(
+    card_header("Body mass and flipper length"),
+    plotOutput("penguin_plot", height = "480px")
+  ),
+
+  card(
+    card_header("Filtered data"),
+    DTOutput("penguin_table")
+  )
+)
+
+# Server
+
+server <- function(input, output, session) {
+
+  filtered_penguins <- eventReactive(
+    input$update,
+    {
+      validate(
+        need(
+          length(input$islands) > 0,
+          "Choose at least one island."
+        )
+      )
+
+      data <- penguins |>
+        filter(
+          !is.na(flipper_length_mm),
+          !is.na(body_mass_g),
+          island %in% input$islands,
+          body_mass_g >= input$body_mass_range[1],
+          body_mass_g <= input$body_mass_range[2]
+        )
+
+      if (input$species != "All") {
+        data <- data |>
+          filter(species == input$species)
+      }
+
+      validate(
+        need(
+          nrow(data) > 0,
+          "No penguins match the selected filters."
+        )
+      )
+
+      data
+    },
+    ignoreNULL = FALSE
+  )
+
+  output$n_rows <- renderText({
+    data <- filtered_penguins()
+    format(nrow(data), big.mark = ",")
+  })
+
+  output$mean_mass <- renderText({
+    data <- filtered_penguins()
+
+    paste0(
+      format(
+        round(mean(data$body_mass_g, na.rm = TRUE), 0),
+        big.mark = ","
+      ),
+      " g"
+    )
+  })
+
+  output$species_count <- renderText({
+    data <- filtered_penguins()
+    length(unique(data$species))
+  })
+
+  output$penguin_plot <- renderPlot({
+    data <- filtered_penguins()
+
+    p <- ggplot(
+      data,
+      aes(
+        x = flipper_length_mm,
+        y = body_mass_g,
+        colour = species
+      )
+    ) +
+      geom_point(size = 3, alpha = 0.8) +
+      labs(
+        x = "Flipper length, mm",
+        y = "Body mass, g",
+        colour = "Species",
+        title = "Body mass and flipper length"
+      ) +
+      theme_minimal(base_size = 14)
+
+    if (isTRUE(input$show_smooth) && nrow(data) > 2) {
+      p <- p + geom_smooth(method = "lm", se = FALSE)
+    }
+
+    p
+  })
+
+  output$penguin_table <- renderDT({
+    data <- filtered_penguins() |>
+      select(
+        species,
+        island,
+        bill_length_mm,
+        bill_depth_mm,
+        flipper_length_mm,
+        body_mass_g,
+        sex,
+        year
+      )
+
+    datatable(
+      data,
+      options = list(
+        pageLength = 8,
+        scrollX = TRUE
+      ),
+      rownames = FALSE
+    )
+  })
+
+  output$download_data <- downloadHandler(
+    filename = function() {
+      "filtered_penguins.csv"
+    },
+    content = function(file) {
+      write.csv(
+        filtered_penguins(),
+        file,
+        row.names = FALSE
+      )
+    }
+  )
+}
+
+# Run app
+
+shinyApp(ui = ui, server = server)
+```
+
+The advanced version also introduces `bslib`, which is useful for modern Shiny layouts. The basic `fluidPage()` and `sidebarLayout()` functions are still useful for learning, but `bslib` gives more control over cards, sidebars, navigation, and dashboard style. Posit's [application layout guide](https://shiny.posit.co/r/articles/build/layout-guide/) and the `bslib` documentation for [`page_sidebar()`](https://rstudio.github.io/bslib/reference/page_sidebar.html) are useful next steps.
 
 ## Publishing the app
 
-A Shiny app runs through R. This means that it cannot be published in exactly the same way as a static HTML page. The server hosting the app needs to be able to run R.
+A Shiny app runs through R. It cannot be published in exactly the same way as a static HTML page. The server hosting the app needs to be able to run R.
 
-The easiest route for small teaching apps is [shinyapps.io](https://www.shinyapps.io/).
+The easiest route for small teaching apps is [shinyapps.io](https://www.shinyapps.io/). In RStudio, the deployment process is usually done through the publish button. After creating an account and connecting it to RStudio, you can publish the app directly from the app window. Posit also provides a [getting started guide for shinyapps.io](https://docs.posit.co/shinyapps.io/guide/getting_started/).
 
-In RStudio, the deployment process is usually done through the publish button. After creating an account and connecting it to RStudio, you can publish the app directly from the app window.
+<!-- Placeholder image. Add figures/deploy.gif to the figures folder if it is missing. -->
 
-![](figures/deploy.gif)
+![Publishing a Shiny app from RStudio.](figures/deploy.gif)
 
 For larger projects, other deployment options may be more appropriate. These include Posit Connect, a university server, a virtual machine, Docker, or a cloud service such as Google Cloud Run.
+
+The tradeoff is complexity. shinyapps.io is easier to start with. Cloud deployment gives more control, but it requires more attention to resource limits, logs, package versions, access rules, and maintenance.
 
 The important point is that a Shiny app is not just a file. It is an application that needs an R environment.
 
@@ -914,6 +1254,16 @@ The important design question is not whether we can make everything interactive.
 
 A useful research dashboard should not be a dumping ground for every object produced during a project. It should give the user controlled access to selected parts of the evidence base.
 
+## Designing around research tasks
+
+A dashboard should begin with a small number of user tasks. For a social science project, those tasks often involve comparing cases, checking time trends, inspecting coding decisions, or downloading a subset of the data.
+
+A country dashboard might let the user choose a country and inspect several indicators over time. A document coding dashboard might let the user filter by source, label, date, or confidence score. A policy dashboard might let the user compare institutional designs across cases.
+
+The dashboard should not ask the user to understand the internal structure of the data. It should translate that structure into choices that make sense for the project. A user should not need to know the name of every variable in the data set before they can begin.
+
+This is where dashboards differ from data dumps. A data dump gives the user everything. A dashboard gives the user a guided path through selected parts of the evidence.
+
 ## A simple research dashboard structure
 
 A practical research dashboard often has four sections.
@@ -934,14 +1284,14 @@ In Shiny, this can be organized with tabs.
 
 ui <- fluidPage(
   titlePanel("Research Dashboard"),
-  
+
   tabsetPanel(
     tabPanel(
       "Overview",
       h3("About this dashboard"),
       p("Short project description goes here.")
     ),
-    
+
     tabPanel(
       "Explore",
       sidebarLayout(
@@ -957,12 +1307,12 @@ ui <- fluidPage(
         )
       )
     ),
-    
+
     tabPanel(
       "Data",
       DTOutput("data_table")
     ),
-    
+
     tabPanel(
       "Methods",
       h3("Data and coding"),
@@ -983,6 +1333,12 @@ A second mistake is making everything reactive. Interactivity is useful only whe
 A third mistake is hiding the data. Research dashboards should usually include a table or documentation page. This helps users understand what they are seeing and reduces the risk that the dashboard becomes a decorative object.
 
 A fourth mistake is forgetting that the app needs to be maintained. If the data are updated manually, the dashboard should make that clear. If the app depends on external files, APIs, or packages, those dependencies should be documented.
+
+A fifth mistake is treating deployment as an afterthought. An app that runs locally may fail on a server if a file path is hard coded, a package is missing, or a data file has not been included. Testing the app from a clean project folder helps catch these problems earlier.
+
+## Further documentation
+
+The official Shiny documentation is the best next stop after this chapter. Posit's material on [app formats](https://shiny.posit.co/r/articles/build/app-formats/), [reactive expressions](https://shiny.posit.co/r/getstarted/shiny-basics/lesson6/), [application layouts](https://shiny.posit.co/r/articles/build/layout-guide/), and [shinyapps.io deployment](https://docs.posit.co/shinyapps.io/guide/getting_started/) covers the main steps needed to move beyond the example app.
 
 ## Conclusion
 
