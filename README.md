@@ -1,29 +1,28 @@
 # Data and Visualization in R
 
-Source files for *Data and Visualization in R*, a practical Quarto book for students, researchers, and analysts learning data visualization and applied R workflows.
+This repository contains the source files for *Data and Visualization in R*, a practical Quarto book for learning how to work with data, graphics, and interactive tools in R.
 
-Book: https://alfredohs.quarto.pub/dviz_book/
+Read the book here: <https://book.alfredohs.com>
 
-## About
+## What This Book Is
 
-This book introduces practical tools for working with data in R, with chapters on data visualization, basic workflows, web scraping, and interactive dashboards with R Shiny. The emphasis is on usable examples that readers can adapt for research, teaching, and applied analysis.
+*Data and Visualization in R* introduces R through concrete tasks rather than abstract programming exercises, with an emphasis on making things that are readable, reusable, and useful outside the classroom. The chapters therefore focus on practical R workflows for producing clearer, more reproducible data work. The emphasis is on examples that can be inspected, modified, and reused, especially in research and teaching contexts.
 
-## Repository
 
-This repository contains the Quarto source files for the book, including chapter files, figures, project configuration, and supporting materials.
+## What Is in the Repository
 
-## Requirements
+This is the working source for the book. It includes:
 
-To render the book locally, install Quarto and the main R packages used across the chapters.
+- Quarto chapter files
+- Project configuration
+- Figures and supporting files
+- Code examples used in the chapters
+- Materials needed to render the HTML version of the book
 
-## Render
+## Feedback
 
-Open the project in RStudio and render the book from the Build pane, or run:
-
-    quarto::quarto_render()
-
-The book is intended to render as HTML.
+Corrections, suggestions, and bug reports are welcome. If something is unclear, broken, outdated, or simply less useful than it should be, please open an issue.
 
 ## Author
 
-Alfredo Hernandez Sanchez
+Alfredo Hernández Sánchez

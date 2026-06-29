@@ -28,6 +28,7 @@ format:
   html:
     theme: cosmo
     css: resources/styles.css
+    include-after-body: cloudflare.html
 
 execute:
   warning: false
